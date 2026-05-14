@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Treino para o Exame de Acesso de Matemática - UAb</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}],throwOnError:false});"></script>
+<style>
+:root{
+  --bg:#0f172a; --panel:#1e293b; --panel2:#334155; --txt:#e2e8f0; --muted:#94a3b8;
+  --accent:#38bdf8; --accent2:#0ea5e9; --ok:#22c55e; --err:#ef4444; --warn:#f59e0b;
+  --border:#475569;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:var(--bg);color:var(--txt);line-height:1.6;min-height:100vh}
+header{background:linear-gradient(135deg,#0c4a6e,#075985);padding:1.2rem 1.5rem;
+  border-bottom:2px solid var(--accent);position:sticky;top:0;z-index:10;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+header h1{font-size:1.25rem;font-weight:700}
+header .sub{font-size:.85rem;color:var(--muted)}
+#timer{font-family:'SF Mono',Consolas,monospace;font-size:1.1rem;background:rgba(0,0,0,.3);
+  padding:.4rem .8rem;border-radius:6px;border:1px solid var(--border)}
+main{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:10px;
+  padding:1.5rem;margin-bottom:1.2rem;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.card h2{color:var(--accent);margin-bottom:.8rem;font-size:1.1rem}
+.q-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap}
+.q-num{font-weight:700;color:var(--accent);font-size:1.05rem}
+.q-points{font-size:.85rem;color:var(--warn);background:rgba(245,158,11,.1);
+  padding:.2rem .6rem;border-radius:4px;border:1px solid rgba(245,158,11,.3)}
+.q-topic{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.q-body{margin:1rem 0;font-size:1rem}
+.options{display:flex;flex-direction:column;gap:.5rem;margin-top:.8rem}
+.opt{padding:.7rem 1rem;background:var(--panel2);border:1px solid var(--border);
+  border-radius:6px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:.6rem}
+.opt:hover{background:#475569;border-color:var(--accent)}
+.opt input{accent-color:var(--accent);cursor:pointer}
+.opt.selected{background:#0c4a6e;border-color:var(--accent)}
+.opt.correct{background:rgba(34,197,94,.2);border-color:var(--ok)}
+.opt.wrong{background:rgba(239,68,68,.2);border-color:var(--err)}
+.opt-label{font-weight:700;color:var(--accent);margin-right:.3rem}
+.open-answer{width:100%;min-height:120px;background:var(--panel2);border:1px solid var(--border);
+  border-radius:6px;padding:.8rem;color:var(--txt);font-family:inherit;font-size:.95rem;resize:vertical}
+.open-answer:focus{outline:none;border-color:var(--accent)}
+.btns{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
+.btn{padding:.6rem 1.1rem;border:none;border-radius:6px;cursor:pointer;font-weight:600;
+  font-size:.9rem;transition:all .15s;font-family:inherit}
+.btn-primary{background:var(--accent);color:#0c1220}
+.btn-primary:hover{background:#7dd3fc}
+.btn-secondary{background:var(--panel2);color:var(--txt);border:1px solid var(--border)}
+.btn-secondary:hover{background:#475569}
+.btn-warn{background:var(--warn);color:#0c1220}
+.btn-warn:hover{background:#fbbf24}
+.btn-success{background:var(--ok);color:#0c1220}
+.btn-success:hover{background:#4ade80}
+.hint{margin-top:.8rem;padding:.9rem;background:rgba(56,189,248,.1);border-left:3px solid var(--accent);
+  border-radius:4px;font-size:.92rem;display:none}
+.hint.show{display:block}
+.hint-label{font-weight:700;color:var(--accent);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem}
+.solution{margin-top:1rem;padding:1rem;background:rgba(34,197,94,.08);border-left:3px solid var(--ok);
+  border-radius:4px;display:none}
+.solution.show{display:block}
+.solution h4{color:var(--ok);margin-bottom:.5rem;font-size:.95rem}
+.start-screen{text-align:center;padding:2rem 1rem}
+.start-screen h2{font-size:1.8rem;margin-bottom:1rem;color:var(--accent)}
+.start-screen p{color:var(--muted);margin-bottom:1.5rem;max-width:600px;margin-left:auto;margin-right:auto}
+.start-screen .btn{font-size:1.05rem;padding:.9rem 1.8rem}
+.results-summary{text-align:center;padding:1.5rem}
+.score-big{font-size:3.5rem;font-weight:700;color:var(--accent);margin:1rem 0}
+.score-detail{color:var(--muted);font-size:1rem}
+.divider{border-top:1px solid var(--border);margin:1.5rem 0;text-align:center;position:relative}
+.divider span{background:var(--bg);padding:0 1rem;position:relative;top:-.7rem;color:var(--muted);font-size:.85rem}
+.part-header{background:linear-gradient(90deg,#0c4a6e,transparent);padding:.8rem 1rem;border-radius:6px;
+  border-left:4px solid var(--accent);margin:1.5rem 0 1rem;font-weight:700;color:var(--accent);font-size:1.1rem}
+.progress{height:6px;background:var(--panel2);border-radius:3px;overflow:hidden;margin-top:.5rem}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--ok));transition:width .3s}
+footer{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border)}
+.topics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.6rem;margin:1rem 0}
+.topic-chip{background:var(--panel2);padding:.5rem .8rem;border-radius:6px;border:1px solid var(--border);font-size:.85rem}
+.note{font-size:.85rem;color:var(--muted);margin-top:.5rem;font-style:italic}
+@media (max-width:600px){
+  main{padding:1rem}
+  .card{padding:1rem}
+  header h1{font-size:1.05rem}
+  .score-big{font-size:2.5rem}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Treino - Exame de Acesso de Matemática</h1>
+    <div class="sub">Universidade Aberta | Preparação para a prova</div>
+  </div>
+  <div id="timer">02:30:00</div>
+</header>
+
+<main id="app"></main>
+
+<footer>
+  Banco de exercícios alinhado com o programa oficial da UAb (Estatística, Combinatória, Probabilidades, Funções, Sucessões, Limites, Derivadas).<br>
+  Pressiona <strong>"Novo Teste"</strong> para gerar uma prova diferente sempre que precisares.
+</footer>
+
+<script>
+/* ============================================================
+   BANCO DE PERGUNTAS - ESCOLHA MÚLTIPLA (PARTE A)
+   ============================================================ */
+const MC_BANK = [
+  {
+    id:'MC01', topic:'Funções - Domínio',
+    q:'O domínio da função $f(x)=\\ln|x|$ é igual a:',
+    options:['$\\mathbb{R}$','$]0,+\\infty[$','$]-\\infty,0[$','$\\mathbb{R}\\setminus\\{0\\}$','Nenhuma das opções anteriores.'],
+    correct:3,
+    hints:[
+      'O logaritmo só está definido para argumentos estritamente positivos.',
+      'Tens de garantir $|x|>0$. Quando é que $|x|=0$?'
+    ],
+    sol:'$|x|>0 \\iff x \\neq 0$. Logo, $D_f = \\mathbb{R}\\setminus\\{0\\}$. Opção (D).'
+  },
+  {
+    id:'MC02', topic:'Funções - Domínio',
+    q:'O domínio da função $f(x)=\\sqrt{x-2}$ é:',
+    options:['$\\mathbb{R}$','$]2,+\\infty[$','$[2,+\\infty[$','$]-\\infty,2]$','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      'A raiz quadrada exige radicando não negativo.',
+      'Resolve $x-2 \\geq 0$.'
+    ],
+    sol:'$x-2 \\geq 0 \\iff x \\geq 2$. Logo, $D_f = [2,+\\infty[$. Opção (C).'
+  },
+  {
+    id:'MC03', topic:'Funções - Domínio',
+    q:'O domínio de $f(x)=\\dfrac{1}{x^2-9}$ é:',
+    options:['$\\mathbb{R}$','$\\mathbb{R}\\setminus\\{3\\}$','$\\mathbb{R}\\setminus\\{-3,3\\}$','$]3,+\\infty[$','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      'Numa fração, o denominador não pode anular-se.',
+      'Resolve $x^2-9=0$.'
+    ],
+    sol:'$x^2-9=0 \\iff x=\\pm 3$. Logo, $D_f = \\mathbb{R}\\setminus\\{-3,3\\}$. Opção (C).'
+  },
+  {
+    id:'MC04', topic:'Funções - Domínio',
+    q:'O domínio de $f(x)=\\ln(x-1)$ é:',
+    options:['$\\mathbb{R}$','$]1,+\\infty[$','$[1,+\\infty[$','$\\mathbb{R}\\setminus\\{1\\}$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'O argumento do logaritmo tem de ser estritamente positivo.'
+    ],
+    sol:'$x-1>0 \\iff x>1$. Logo, $D_f = ]1,+\\infty[$. Opção (B).'
+  },
+  {
+    id:'MC05', topic:'Sucessões - Limites notáveis',
+    q:'O limite $\\displaystyle\\lim_{n\\to+\\infty}\\left(1+\\dfrac{1}{n}\\right)^{3n}$ é igual a:',
+    options:['$e$','$0$','$e^3$','$+\\infty$','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      'Recorda o limite notável $\\lim\\left(1+\\frac{1}{n}\\right)^n = e$.',
+      'Reescreve $(1+1/n)^{3n} = \\left[(1+1/n)^n\\right]^3$.'
+    ],
+    sol:'$\\left(1+\\frac{1}{n}\\right)^{3n} = \\left[\\left(1+\\frac{1}{n}\\right)^n\\right]^3 \\to e^3$. Opção (C).'
+  },
+  {
+    id:'MC06', topic:'Sucessões - Limites notáveis',
+    q:'O limite $\\displaystyle\\lim_{n\\to+\\infty}\\left(1+\\dfrac{2}{n}\\right)^{n}$ é igual a:',
+    options:['$e$','$e^2$','$2e$','$+\\infty$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Limite notável: $\\lim\\left(1+\\frac{a}{n}\\right)^n = e^a$.'
+    ],
+    sol:'Pela regra $\\lim\\left(1+\\frac{a}{n}\\right)^n = e^a$, obtém-se $e^2$. Opção (B).'
+  },
+  {
+    id:'MC07', topic:'Sucessões - Limites notáveis',
+    q:'O limite $\\displaystyle\\lim_{n\\to+\\infty}\\left(1-\\dfrac{1}{n}\\right)^{n}$ é igual a:',
+    options:['$e$','$1$','$\\frac{1}{e}$','$0$','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      'É o limite notável $\\lim\\left(1+\\frac{a}{n}\\right)^n = e^a$ com $a=-1$.'
+    ],
+    sol:'$\\left(1+\\frac{-1}{n}\\right)^n \\to e^{-1} = \\frac{1}{e}$. Opção (C).'
+  },
+  {
+    id:'MC08', topic:'Sucessões - Propriedades',
+    q:'Considere a sucessão $a_n=\\dfrac{(-1)^n}{n}$. Podemos afirmar que a sucessão:',
+    options:['é monótona.','é não convergente.','é uma progressão aritmética.','é limitada.','Nenhuma das opções anteriores.'],
+    correct:3,
+    hints:[
+      'Calcula os primeiros termos: $a_1=-1$, $a_2=1/2$, $a_3=-1/3$...',
+      'Alterna sinais, portanto não é monótona. Mas todos os termos estão entre que valores?'
+    ],
+    sol:'Alterna sinais, logo não é monótona nem progressão aritmética. Converge para 0, logo é convergente. Como $|a_n|\\leq 1$, é limitada. Opção (D).'
+  },
+  {
+    id:'MC09', topic:'Sucessões - Progressões',
+    q:'A sucessão $a_n = 2n-3$ é:',
+    options:['uma progressão geométrica de razão 2.','uma progressão aritmética de razão 2.','uma progressão aritmética de razão $-3$.','não monótona.','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Calcula $a_{n+1}-a_n$.'
+    ],
+    sol:'$a_{n+1}-a_n = 2(n+1)-3-(2n-3)=2$. Progressão aritmética de razão 2. Opção (B).'
+  },
+  {
+    id:'MC10', topic:'Sucessões - Progressões',
+    q:'A sucessão $a_n = 3 \\cdot 2^n$ é:',
+    options:['progressão aritmética de razão 2.','progressão geométrica de razão 2.','progressão geométrica de razão 3.','limitada.','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Calcula $a_{n+1}/a_n$.'
+    ],
+    sol:'$\\frac{a_{n+1}}{a_n} = \\frac{3\\cdot 2^{n+1}}{3\\cdot 2^n} = 2$. Progressão geométrica de razão 2. Opção (B).'
+  },
+  {
+    id:'MC11', topic:'Limites de funções',
+    q:'O limite $\\displaystyle\\lim_{x\\to 0}\\dfrac{\\tan(3x)}{x}$ é igual a:',
+    options:['$\\frac{1}{3}$','$3$','$0$','$+\\infty$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Limite notável: $\\lim_{x\\to 0}\\frac{\\tan x}{x}=1$.',
+      'Multiplica e divide por 3: $\\frac{\\tan(3x)}{x} = 3\\cdot\\frac{\\tan(3x)}{3x}$.'
+    ],
+    sol:'$\\frac{\\tan(3x)}{x} = 3\\cdot\\frac{\\tan(3x)}{3x} \\to 3\\cdot 1 = 3$. Opção (B).'
+  },
+  {
+    id:'MC12', topic:'Limites de funções',
+    q:'O limite $\\displaystyle\\lim_{x\\to 0}\\dfrac{\\sin(5x)}{x}$ é igual a:',
+    options:['$1$','$5$','$\\frac{1}{5}$','$0$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Limite notável: $\\lim_{x\\to 0}\\frac{\\sin x}{x}=1$.'
+    ],
+    sol:'$\\frac{\\sin(5x)}{x} = 5\\cdot\\frac{\\sin(5x)}{5x} \\to 5$. Opção (B).'
+  },
+  {
+    id:'MC13', topic:'Limites de funções',
+    q:'O limite $\\displaystyle\\lim_{x\\to 0}\\dfrac{e^x-1}{x}$ é igual a:',
+    options:['$0$','$1$','$e$','Não existe','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'É um limite notável fundamental.'
+    ],
+    sol:'$\\lim_{x\\to 0}\\frac{e^x-1}{x}=1$ (limite notável). Opção (B).'
+  },
+  {
+    id:'MC14', topic:'Limites de funções',
+    q:'O limite $\\displaystyle\\lim_{x\\to 0}\\dfrac{\\ln(1+x)}{x}$ é igual a:',
+    options:['$0$','$1$','$+\\infty$','$e$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Limite notável: $\\lim_{x\\to 0}\\frac{\\ln(1+x)}{x}=1$.'
+    ],
+    sol:'É um limite notável: $\\lim_{x\\to 0}\\frac{\\ln(1+x)}{x}=1$. Opção (B).'
+  },
+  {
+    id:'MC15', topic:'Combinatória',
+    q:'Num determinado jogo de cartas jogado por 4 jogadores, o baralho de 52 cartas é distribuído ficando cada jogador com uma mão de 13 cartas. Quantas mãos diferentes existem para um dado jogador?',
+    options:['$^{13}C_4$','$^{52}C_{13}$','$^{52}A_{13}$','$^{52}C_4$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'A ordem em que se recebem as cartas não importa.',
+      'É uma combinação de 52 cartas tomadas 13 a 13.'
+    ],
+    sol:'A ordem das cartas na mão não é relevante. Logo, é uma combinação: $^{52}C_{13}$. Opção (B).'
+  },
+  {
+    id:'MC16', topic:'Combinatória',
+    q:'Quantas formas diferentes existem de ordenar 5 livros distintos numa prateleira?',
+    options:['$5$','$25$','$60$','$120$','Nenhuma das opções anteriores.'],
+    correct:3,
+    hints:[
+      'Trata-se de permutações.',
+      'Permutações de $n$ elementos = $n!$.'
+    ],
+    sol:'$P_5 = 5! = 120$. Opção (D).'
+  },
+  {
+    id:'MC17', topic:'Combinatória',
+    q:'Quantos códigos de 3 algarismos distintos podem ser formados usando os dígitos 1, 2, 3, 4, 5?',
+    options:['$10$','$60$','$120$','$125$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'A ordem importa (códigos), os algarismos são distintos.',
+      'Arranjos sem repetição: $^nA_k = \\frac{n!}{(n-k)!}$.'
+    ],
+    sol:'$^5A_3 = \\frac{5!}{2!} = 5\\cdot 4\\cdot 3 = 60$. Opção (B).'
+  },
+  {
+    id:'MC18', topic:'Probabilidades',
+    q:'Lança-se um dado equilibrado de 6 faces. Qual é a probabilidade de sair um número par?',
+    options:['$\\frac{1}{6}$','$\\frac{1}{3}$','$\\frac{1}{2}$','$\\frac{2}{3}$','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      'Casos favoráveis: 2, 4, 6.',
+      'Casos possíveis: 6.'
+    ],
+    sol:'$P = \\frac{3}{6} = \\frac{1}{2}$. Opção (C).'
+  },
+  {
+    id:'MC19', topic:'Probabilidades',
+    q:'Sejam $A$ e $B$ acontecimentos com $P(A)=0,5$, $P(B)=0,4$ e $P(A\\cap B)=0,2$. Então $P(A\\cup B)$ é igual a:',
+    options:['$0,9$','$0,7$','$0,2$','$1,1$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Fórmula da união: $P(A\\cup B)=P(A)+P(B)-P(A\\cap B)$.'
+    ],
+    sol:'$P(A\\cup B)=0,5+0,4-0,2=0,7$. Opção (B).'
+  },
+  {
+    id:'MC20', topic:'Probabilidades',
+    q:'Sejam $A$ e $B$ acontecimentos independentes com $P(A)=0,3$ e $P(B)=0,5$. Então $P(A\\cap B)$ é:',
+    options:['$0,8$','$0,2$','$0,15$','$0,6$','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      'Para acontecimentos independentes: $P(A\\cap B)=P(A)\\cdot P(B)$.'
+    ],
+    sol:'$P(A\\cap B)=0,3\\times 0,5 = 0,15$. Opção (C).'
+  },
+  {
+    id:'MC21', topic:'Derivadas',
+    q:'A derivada de $f(x)=e^{2x}$ é:',
+    options:['$e^{2x}$','$2e^{2x}$','$2xe^{2x-1}$','$e^{2}$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Regra da cadeia: $(e^{g(x)})\' = g\'(x)\\cdot e^{g(x)}$.'
+    ],
+    sol:'$f\'(x) = (2x)\'\\cdot e^{2x} = 2e^{2x}$. Opção (B).'
+  },
+  {
+    id:'MC22', topic:'Derivadas',
+    q:'A derivada de $f(x)=\\ln(x^2+1)$ é:',
+    options:['$\\frac{1}{x^2+1}$','$\\frac{2x}{x^2+1}$','$\\frac{2x}{(x^2+1)^2}$','$\\ln(2x)$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Regra da cadeia: $(\\ln g(x))\' = \\frac{g\'(x)}{g(x)}$.'
+    ],
+    sol:'$f\'(x) = \\frac{(x^2+1)\'}{x^2+1} = \\frac{2x}{x^2+1}$. Opção (B).'
+  },
+  {
+    id:'MC23', topic:'Derivadas',
+    q:'A derivada de $f(x)=x^2\\sin(x)$ é:',
+    options:['$2x\\cos(x)$','$2x\\sin(x)+x^2\\cos(x)$','$2x\\sin(x)-x^2\\cos(x)$','$x^2\\cos(x)$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Regra do produto: $(uv)\'=u\'v+uv\'$.'
+    ],
+    sol:'$f\'(x) = 2x\\sin(x) + x^2\\cos(x)$. Opção (B).'
+  },
+  {
+    id:'MC24', topic:'Funções - Quadrática',
+    q:'Os zeros da função $f(x)=x^2-5x+6$ são:',
+    options:['$1$ e $6$','$2$ e $3$','$-2$ e $-3$','$-1$ e $-6$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Fórmula resolvente: $x = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}$.',
+      '$b^2-4ac = 25-24=1$.'
+    ],
+    sol:'$x=\\frac{5\\pm 1}{2}$, donde $x=3$ ou $x=2$. Opção (B).'
+  },
+  {
+    id:'MC25', topic:'Funções - Módulo',
+    q:'O contradomínio da função $f(x)=|x-1|+2$ é:',
+    options:['$\\mathbb{R}$','$[1,+\\infty[$','$[2,+\\infty[$','$]-\\infty,2]$','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      '$|x-1|\\geq 0$ para todo $x$.',
+      'Soma-se 2 ao mínimo de $|x-1|$.'
+    ],
+    sol:'Como $|x-1|\\geq 0$, então $f(x)\\geq 2$. Logo, contradomínio $=[2,+\\infty[$. Opção (C).'
+  },
+  {
+    id:'MC26', topic:'Funções - Logarítmica',
+    q:'$\\log_2(8) + \\log_3(9)$ é igual a:',
+    options:['$3$','$5$','$6$','$17$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      '$\\log_a(a^n) = n$.'
+    ],
+    sol:'$\\log_2(8)=\\log_2(2^3)=3$ e $\\log_3(9)=\\log_3(3^2)=2$. Soma = 5. Opção (B).'
+  },
+  {
+    id:'MC27', topic:'Funções - Exponencial',
+    q:'A solução da equação $2^{x+1}=8$ é:',
+    options:['$x=2$','$x=3$','$x=4$','$x=\\log_2(7)$','Nenhuma das opções anteriores.'],
+    correct:0,
+    hints:[
+      '$8=2^3$. Iguala expoentes.'
+    ],
+    sol:'$2^{x+1}=2^3 \\iff x+1=3 \\iff x=2$. Opção (A).'
+  },
+  {
+    id:'MC28', topic:'Sucessões - Convergência',
+    q:'A sucessão $a_n = \\dfrac{3n+1}{n+2}$ converge para:',
+    options:['$0$','$1$','$3$','$+\\infty$','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      'Divide numerador e denominador por $n$.'
+    ],
+    sol:'$\\frac{3n+1}{n+2} = \\frac{3+1/n}{1+2/n} \\to \\frac{3+0}{1+0}=3$. Opção (C).'
+  },
+  {
+    id:'MC29', topic:'Limites de funções',
+    q:'O limite $\\displaystyle\\lim_{x\\to +\\infty}\\dfrac{2x^2+1}{x^2-3}$ é:',
+    options:['$0$','$2$','$-\\frac{1}{3}$','$+\\infty$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Coeficientes dos termos de maior grau.'
+    ],
+    sol:'$\\lim_{x\\to+\\infty}\\frac{2x^2+1}{x^2-3} = \\frac{2}{1}=2$. Opção (B).'
+  },
+  {
+    id:'MC30', topic:'Funções - Trigonométricas',
+    q:'$\\cos\\left(\\dfrac{\\pi}{3}\\right) + \\sin\\left(\\dfrac{\\pi}{6}\\right)$ é igual a:',
+    options:['$0$','$\\frac{1}{2}$','$1$','$\\sqrt{3}$','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      '$\\cos(\\pi/3) = 1/2$ e $\\sin(\\pi/6) = 1/2$.'
+    ],
+    sol:'$\\frac{1}{2} + \\frac{1}{2} = 1$. Opção (C).'
+  },
+  {
+    id:'MC31', topic:'Derivadas',
+    q:'A derivada de $f(x)=\\dfrac{x}{x+1}$ é:',
+    options:['$1$','$\\frac{1}{(x+1)^2}$','$\\frac{-1}{(x+1)^2}$','$\\frac{x+1}{x}$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Regra do quociente: $\\left(\\frac{u}{v}\\right)\' = \\frac{u\'v-uv\'}{v^2}$.'
+    ],
+    sol:'$f\'(x) = \\frac{1\\cdot(x+1) - x\\cdot 1}{(x+1)^2} = \\frac{1}{(x+1)^2}$. Opção (B).'
+  },
+  {
+    id:'MC32', topic:'Estatística',
+    q:'A média de 5 observações é 10. Se adicionarmos uma observação igual a 16, a nova média é:',
+    options:['$10$','$11$','$12$','$13$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Soma das 5 observações = $5\\times 10 = 50$.',
+      'Nova média = (soma + 16) / 6.'
+    ],
+    sol:'Nova média = $\\frac{50+16}{6} = \\frac{66}{6} = 11$. Opção (B).'
+  }
+];
+
+/* ============================================================
+   BANCO DE PERGUNTAS - DESENVOLVIMENTO (PARTE B)
+   ============================================================ */
+const OPEN_BANK = [
+  {
+    id:'OP01', topic:'Estatística Descritiva', points:3,
+    q:`<p>Um professor pede a 40 estudantes para realizarem um miniteste de revisão. Os resultados (1 a 10 valores) foram:</p>
+<table style="margin:1rem auto;border-collapse:collapse;text-align:center"><thead>
+<tr><th style="padding:.4rem .8rem;border:1px solid #475569">Notas</th><th style="padding:.4rem .8rem;border:1px solid #475569">N.º Alunos</th><th style="padding:.4rem .8rem;border:1px solid #475569">Freq. Acumulada</th></tr>
+</thead><tbody>
+<tr><td style="padding:.3rem .8rem;border:1px solid #475569">1</td><td style="padding:.3rem .8rem;border:1px solid #475569">0</td><td style="padding:.3rem .8rem;border:1px solid #475569">0</td></tr>
+<tr><td style="padding:.3rem .8rem;border:1px solid #475569">2</td><td style="padding:.3rem .8rem;border:1px solid #475569">0</td><td style="padding:.3rem .8rem;border:1px solid #475569">0</td></tr>
+<tr><td style="padding:.3rem .8rem;border:1px solid #475569">3</td><td style="padding:.3rem .8rem;border:1px solid #475569">?</td><td style="padding:.3rem .8rem;border:1px solid #475569">0</td></tr>
+<tr><td style="padding:.3rem .8rem;border:1px solid #475569">4</td><td style="padding:.3rem .8rem;border:1px solid #475569">1</td><td style="padding:.3rem .8rem;border:1px solid #475569">?</td></tr>
+<tr><td style="padding:.3rem .8rem;border:1px solid #475569">5</td><td style="padding:.3rem .8rem;border:1px solid #475569">1</td><td style="padding:.3rem .8rem;border:1px solid #475569">2</td></tr>
+<tr><td style="padding:.3rem .8rem;border:1px solid #475569">6</td><td style="padding:.3rem .8rem;border:1px solid #475569">4</td><td style="padding:.3rem .8rem;border:1px solid #475569">?</td></tr>
+<tr><td style="padding:.3rem .8rem;border:1px solid #475569">7</td><td style="padding:.3rem .8rem;border:1px solid #475569">?</td><td style="padding:.3rem .8rem;border:1px solid #475569">14</td></tr>
+<tr><td style="padding:.3rem .8rem;border:1px solid #475569">8</td><td style="padding:.3rem .8rem;border:1px solid #475569">10</td><td style="padding:.3rem .8rem;border:1px solid #475569">?</td></tr>
+<tr><td style="padding:.3rem .8rem;border:1px solid #475569">9</td><td style="padding:.3rem .8rem;border:1px solid #475569">11</td><td style="padding:.3rem .8rem;border:1px solid #475569">?</td></tr>
+<tr><td style="padding:.3rem .8rem;border:1px solid #475569">10</td><td style="padding:.3rem .8rem;border:1px solid #475569">?</td><td style="padding:.3rem .8rem;border:1px solid #475569">40</td></tr>
+</tbody></table>
+<p><strong>a)</strong> (1 valor) Complete a tabela.</p>
+<p><strong>b)</strong> (2 valores) Determine a moda e calcule a média das notas.</p>`,
+    hints:[
+      'Na coluna das frequências acumuladas, cada linha é a anterior mais a frequência absoluta.',
+      'Moda = valor com maior frequência absoluta.',
+      'Média = $\\frac{\\sum n_i x_i}{N}$, onde $N=40$.'
+    ],
+    sol:`<p><strong>a)</strong> Completando: Nota 3: 0 alunos (FA=0). Nota 4: FA=1. Nota 6: FA=6. Nota 7: 8 alunos (FA=14). Nota 8: FA=24. Nota 9: FA=35. Nota 10: 5 alunos (FA=40).</p>
+<p><strong>b)</strong> A nota com maior frequência absoluta é 9 (11 alunos). <strong>Moda = 9</strong>.</p>
+<p>Média: $\\bar{x} = \\frac{4\\cdot 1 + 5\\cdot 1 + 6\\cdot 4 + 7\\cdot 8 + 8\\cdot 10 + 9\\cdot 11 + 10\\cdot 5}{40} = \\frac{4+5+24+56+80+99+50}{40} = \\frac{318}{40} = 7,95$.</p>`
+  },
+  {
+    id:'OP02', topic:'Funções - Continuidade', points:4,
+    q:`<p>Considere a função $$f(x) = \\begin{cases} \\ln(1-x) & \\text{se } x>0 \\\\ e^x-1 & \\text{se } x\\leq 0 \\end{cases}$$</p>
+<p>onde $\\ln$ é o logaritmo na base $e$.</p>
+<p><strong>a)</strong> (2 valores) Determine o domínio de $f$ e os seus zeros, caso existam. Justifique.</p>
+<p><strong>b)</strong> (2 valores) Estude a continuidade de $f$ no seu domínio.</p>`,
+    hints:[
+      'Para $x>0$: $\\ln(1-x)$ exige $1-x>0$.',
+      'Para $x\\leq 0$: $e^x-1$ está definido em todo o $\\mathbb{R}$.',
+      'Para continuidade em $x=0$, compara os limites laterais com $f(0)$.'
+    ],
+    sol:`<p><strong>a) Domínio:</strong> Para $x>0$ exige-se $1-x>0 \\iff x<1$, logo $0<x<1$. Para $x\\leq 0$, sem restrições. <strong>$D_f = ]-\\infty,1[$</strong>.</p>
+<p><strong>Zeros:</strong> Se $x>0$: $\\ln(1-x)=0 \\iff 1-x=1 \\iff x=0$ (não pertence a este ramo). Se $x\\leq 0$: $e^x-1=0 \\iff e^x=1 \\iff x=0$. <strong>Único zero: $x=0$</strong>.</p>
+<p><strong>b) Continuidade:</strong> Cada ramo é contínuo no respetivo intervalo (composição de funções contínuas). Resta verificar $x=0$:</p>
+<p>$f(0) = e^0-1 = 0$.</p>
+<p>$\\lim_{x\\to 0^-} (e^x-1) = 0$.</p>
+<p>$\\lim_{x\\to 0^+} \\ln(1-x) = \\ln(1) = 0$.</p>
+<p>Como os limites laterais coincidem com $f(0)=0$, $f$ é <strong>contínua em todo o seu domínio</strong>.</p>`
+  },
+  {
+    id:'OP03', topic:'Derivadas', points:4,
+    q:`<p>Calcule a derivada das seguintes funções:</p>
+<p><strong>a)</strong> (2 valores) $f(x) = x^3\\cos(x)$, onde $\\cos$ representa a função trigonométrica cosseno.</p>
+<p><strong>b)</strong> (2 valores) $g(x) = \\dfrac{\\ln(2x)}{e^x+1}$.</p>`,
+    hints:[
+      'a) Regra do produto: $(uv)\' = u\'v + uv\'$.',
+      'b) Regra do quociente: $\\left(\\frac{u}{v}\\right)\' = \\frac{u\'v - uv\'}{v^2}$.',
+      'Lembra-te: $(\\ln(2x))\' = \\frac{2}{2x} = \\frac{1}{x}$.'
+    ],
+    sol:`<p><strong>a)</strong> $f\'(x) = 3x^2\\cos(x) + x^3(-\\sin(x)) = \\mathbf{3x^2\\cos(x) - x^3\\sin(x)}$.</p>
+<p><strong>b)</strong> Sejam $u = \\ln(2x)$, $v=e^x+1$.</p>
+<p>$u\' = \\frac{2}{2x} = \\frac{1}{x}$, $v\' = e^x$.</p>
+<p>$g\'(x) = \\dfrac{\\frac{1}{x}(e^x+1) - \\ln(2x)\\cdot e^x}{(e^x+1)^2} = \\mathbf{\\dfrac{\\dfrac{e^x+1}{x} - e^x\\ln(2x)}{(e^x+1)^2}}$.</p>`
+  },
+  {
+    id:'OP04', topic:'Probabilidades', points:3,
+    q:`<p>Numa caixa estão 5 bolas vermelhas, 3 azuis e 2 verdes. Tira-se uma bola ao acaso.</p>
+<p><strong>a)</strong> (1 valor) Qual a probabilidade de a bola ser vermelha?</p>
+<p><strong>b)</strong> (1 valor) Qual a probabilidade de a bola não ser azul?</p>
+<p><strong>c)</strong> (1 valor) Tiram-se 2 bolas em simultâneo. Qual a probabilidade de ambas serem azuis?</p>`,
+    hints:[
+      'Total de bolas: $5+3+2=10$.',
+      'Para tirar 2 bolas em simultâneo, usa combinações: $^{10}C_2$ no total, $^{3}C_2$ azuis.'
+    ],
+    sol:`<p><strong>a)</strong> $P(\\text{vermelha}) = \\frac{5}{10} = \\mathbf{\\frac{1}{2}}$.</p>
+<p><strong>b)</strong> $P(\\text{não azul}) = 1 - \\frac{3}{10} = \\mathbf{\\frac{7}{10}}$.</p>
+<p><strong>c)</strong> $P(\\text{2 azuis}) = \\dfrac{^3C_2}{^{10}C_2} = \\dfrac{3}{45} = \\mathbf{\\dfrac{1}{15}}$.</p>`
+  },
+  {
+    id:'OP05', topic:'Sucessões', points:4,
+    q:`<p>Considere a sucessão $a_n = \\dfrac{2n^2-1}{n^2+3}$.</p>
+<p><strong>a)</strong> (1 valor) Calcule $a_1$, $a_2$ e $a_3$.</p>
+<p><strong>b)</strong> (1,5 valores) Mostre que a sucessão é limitada.</p>
+<p><strong>c)</strong> (1,5 valores) Calcule $\\lim_{n\\to+\\infty} a_n$.</p>`,
+    hints:[
+      'a) Substitui $n$ pelos valores 1, 2, 3.',
+      'b) Mostra que existem constantes $m, M$ tais que $m \\leq a_n \\leq M$.',
+      'c) Divide numerador e denominador por $n^2$.'
+    ],
+    sol:`<p><strong>a)</strong> $a_1 = \\frac{1}{4}$, $a_2 = \\frac{7}{7}=1$, $a_3 = \\frac{17}{12}$.</p>
+<p><strong>b)</strong> Como $n^2+3 > 0$ e $2n^2-1 < 2n^2+6=2(n^2+3)$, então $a_n < 2$. Como $a_n \\geq a_1 = 1/4 > 0$ para $n\\geq 1$, a sucessão é limitada: $\\frac{1}{4} \\leq a_n < 2$.</p>
+<p><strong>c)</strong> $\\lim \\frac{2n^2-1}{n^2+3} = \\lim \\frac{2-1/n^2}{1+3/n^2} = \\frac{2}{1} = \\mathbf{2}$.</p>`
+  },
+  {
+    id:'OP06', topic:'Funções - Análise', points:3,
+    q:`<p>Considere a função $f(x) = x^2 - 4x + 3$.</p>
+<p><strong>a)</strong> (1 valor) Determine os zeros de $f$.</p>
+<p><strong>b)</strong> (1 valor) Determine as coordenadas do vértice da parábola.</p>
+<p><strong>c)</strong> (1 valor) Indique o contradomínio de $f$.</p>`,
+    hints:[
+      'a) Resolve $x^2-4x+3=0$ (fórmula resolvente ou factorização).',
+      'b) Vértice: $x_v = -\\frac{b}{2a}$, $y_v = f(x_v)$.',
+      'c) A parábola tem concavidade voltada para cima (a=1>0).'
+    ],
+    sol:`<p><strong>a)</strong> $x^2-4x+3=0 \\iff (x-1)(x-3)=0 \\iff x=1 \\lor x=3$. Zeros: $\\mathbf{1}$ e $\\mathbf{3}$.</p>
+<p><strong>b)</strong> $x_v = -\\frac{-4}{2\\cdot 1} = 2$; $y_v = 4-8+3=-1$. Vértice: $\\mathbf{(2,-1)}$.</p>
+<p><strong>c)</strong> Como $a=1>0$, a parábola tem mínimo no vértice. Contradomínio: $\\mathbf{[-1, +\\infty[}$.</p>`
+  },
+  {
+    id:'OP07', topic:'Derivadas - Aplicação', points:4,
+    q:`<p>Considere a função $f(x) = x^3 - 3x^2 + 2$.</p>
+<p><strong>a)</strong> (2 valores) Determine os intervalos de monotonia.</p>
+<p><strong>b)</strong> (2 valores) Determine os extremos relativos da função.</p>`,
+    hints:[
+      'Calcula $f\'(x)$.',
+      'Estuda o sinal de $f\'$ para identificar crescimento/decrescimento.',
+      'Pontos onde $f\'(x)=0$ são candidatos a extremos.'
+    ],
+    sol:`<p>$f\'(x) = 3x^2 - 6x = 3x(x-2)$. Zeros em $x=0$ e $x=2$.</p>
+<p><strong>Sinal de $f\'$:</strong> $f\'(x)>0$ em $]-\\infty,0[ \\cup ]2,+\\infty[$; $f\'(x)<0$ em $]0,2[$.</p>
+<p><strong>a) Monotonia:</strong> $f$ crescente em $]-\\infty,0]$ e em $[2,+\\infty[$; decrescente em $[0,2]$.</p>
+<p><strong>b) Extremos:</strong> Máximo relativo em $x=0$: $f(0)=2$. Mínimo relativo em $x=2$: $f(2)=8-12+2=-2$.</p>`
+  },
+  {
+    id:'OP08', topic:'Combinatória', points:3,
+    q:`<p>Num grupo de 8 pessoas (5 mulheres e 3 homens) pretende-se formar uma comissão de 4 pessoas.</p>
+<p><strong>a)</strong> (1 valor) Quantas comissões diferentes se podem formar?</p>
+<p><strong>b)</strong> (1 valor) Quantas comissões têm exatamente 2 mulheres e 2 homens?</p>
+<p><strong>c)</strong> (1 valor) Quantas comissões têm pelo menos uma mulher?</p>`,
+    hints:[
+      'a) Combinações: $^8C_4$.',
+      'b) Multiplica $^5C_2 \\times {}^3C_2$.',
+      'c) Total menos comissões só com homens.'
+    ],
+    sol:`<p><strong>a)</strong> $^8C_4 = \\frac{8!}{4!4!} = \\mathbf{70}$.</p>
+<p><strong>b)</strong> $^5C_2 \\times {}^3C_2 = 10 \\times 3 = \\mathbf{30}$.</p>
+<p><strong>c)</strong> Total $-$ comissões só de homens: $70 - {}^3C_4 = 70 - 0 = \\mathbf{70}$ (não é possível formar comissão de 4 só com 3 homens).</p>`
+  },
+  {
+    id:'OP09', topic:'Limites de funções', points:3,
+    q:`<p>Calcule os seguintes limites:</p>
+<p><strong>a)</strong> (1 valor) $\\displaystyle\\lim_{x\\to 0} \\dfrac{\\sin(2x)}{3x}$.</p>
+<p><strong>b)</strong> (1 valor) $\\displaystyle\\lim_{x\\to +\\infty} \\dfrac{3x^2+5}{2x^2-x}$.</p>
+<p><strong>c)</strong> (1 valor) $\\displaystyle\\lim_{x\\to 0} \\dfrac{e^{3x}-1}{x}$.</p>`,
+    hints:[
+      'Limites notáveis: $\\frac{\\sin x}{x}\\to 1$, $\\frac{e^x-1}{x}\\to 1$.',
+      'Em (b), divide tudo por $x^2$.'
+    ],
+    sol:`<p><strong>a)</strong> $\\frac{\\sin(2x)}{3x} = \\frac{2}{3}\\cdot\\frac{\\sin(2x)}{2x} \\to \\frac{2}{3}\\cdot 1 = \\mathbf{\\frac{2}{3}}$.</p>
+<p><strong>b)</strong> $\\frac{3x^2+5}{2x^2-x} = \\frac{3+5/x^2}{2-1/x} \\to \\frac{3}{2} = \\mathbf{\\frac{3}{2}}$.</p>
+<p><strong>c)</strong> $\\frac{e^{3x}-1}{x} = 3\\cdot\\frac{e^{3x}-1}{3x} \\to 3\\cdot 1 = \\mathbf{3}$.</p>`
+  },
+  {
+    id:'OP10', topic:'Funções - Composição', points:3,
+    q:`<p>Sejam $f(x) = 2x+1$ e $g(x) = x^2$.</p>
+<p><strong>a)</strong> (1 valor) Calcule $(f\\circ g)(x)$.</p>
+<p><strong>b)</strong> (1 valor) Calcule $(g\\circ f)(x)$.</p>
+<p><strong>c)</strong> (1 valor) Determine a função inversa de $f$.</p>`,
+    hints:[
+      '$(f\\circ g)(x) = f(g(x))$.',
+      'Para a inversa: troca $x$ por $y$ e resolve em ordem a $y$.'
+    ],
+    sol:`<p><strong>a)</strong> $(f\\circ g)(x) = f(g(x)) = f(x^2) = 2x^2+1$.</p>
+<p><strong>b)</strong> $(g\\circ f)(x) = g(f(x)) = g(2x+1) = (2x+1)^2$.</p>
+<p><strong>c)</strong> $y=2x+1 \\iff x=\\frac{y-1}{2}$. Logo, $f^{-1}(x) = \\mathbf{\\frac{x-1}{2}}$.</p>`
+  }
+];
+
+/* ============================================================
+   LÓGICA DA APLICAÇÃO
+   ============================================================ */
+const app = document.getElementById('app');
+let testState = null;
+let timerInterval = null;
+let timerSeconds = 2*3600 + 30*60; // 2h30
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function pickRandom(bank, n){
+  return shuffle(bank).slice(0, n);
+}
+
+function renderMath(){
+  if(window.renderMathInElement){
+    renderMathInElement(document.body,{
+      delimiters:[
+        {left:'$$',right:'$$',display:true},
+        {left:'$',right:'$',display:false},
+        {left:'\\(',right:'\\)',display:false},
+        {left:'\\[',right:'\\]',display:true}
+      ],
+      throwOnError:false
+    });
+  }
+}
+
+function fmtTime(s){
+  const h = Math.floor(s/3600);
+  const m = Math.floor((s%3600)/60);
+  const sec = s%60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+
+function startTimer(){
+  document.getElementById('timer').textContent = fmtTime(timerSeconds);
+  if(timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(()=>{
+    timerSeconds--;
+    document.getElementById('timer').textContent = fmtTime(Math.max(0,timerSeconds));
+    if(timerSeconds<=0){
+      clearInterval(timerInterval);
+      alert('Tempo esgotado! O teste será corrigido.');
+      submitTest();
+    }
+  },1000);
+}
+
+function stopTimer(){
+  if(timerInterval) clearInterval(timerInterval);
+}
+
+/* --------- Ecrã inicial --------- */
+function renderStart(){
+  stopTimer();
+  document.getElementById('timer').textContent = '02:30:00';
+  timerSeconds = 2*3600 + 30*60;
+  app.innerHTML = `
+    <div class="card start-screen">
+      <h2>Pronto para treinar?</h2>
+      <p>Esta plataforma gera testes diferentes a cada nova ronda, com base no programa oficial do Exame de Acesso de Matemática da Universidade Aberta.</p>
+      <p><strong>Estrutura do teste:</strong> 6 perguntas de escolha múltipla (Parte A, 1,5 valores cada) + 3 perguntas de desenvolvimento (Parte B). Total: 20 valores.</p>
+      <p><strong>Duração:</strong> 2 horas e 30 minutos. <strong>Sem calculadora.</strong></p>
+      <div class="topics-grid">
+        <div class="topic-chip">Estatística Descritiva</div>
+        <div class="topic-chip">Combinatória e Probabilidades</div>
+        <div class="topic-chip">Funções (linear, módulo, quadrática, polinomiais, trigonométricas)</div>
+        <div class="topic-chip">Sucessões e Progressões</div>
+        <div class="topic-chip">Limites de sucessões e funções</div>
+        <div class="topic-chip">Funções exponencial e logarítmica</div>
+        <div class="topic-chip">Derivadas</div>
+      </div>
+      <div class="btns" style="justify-content:center">
+        <button class="btn btn-primary" onclick="startTest()">Iniciar Teste</button>
+      </div>
+      <p class="note">Dica: durante o teste podes consultar dicas progressivas em cada pergunta. A correção é feita no final.</p>
+    </div>
+  `;
+}
+
+/* --------- Iniciar teste --------- */
+function startTest(){
+  const mc = pickRandom(MC_BANK, 6);
+  const open = pickRandom(OPEN_BANK, 3);
+  testState = {
+    mc, open,
+    answersMC: new Array(6).fill(null),
+    answersOpen: new Array(3).fill(''),
+    submitted: false
+  };
+  timerSeconds = 2*3600 + 30*60;
+  startTimer();
+  renderTest();
+}
+
+/* --------- Renderizar teste --------- */
+function renderTest(){
+  let html = `<div class="part-header">Parte A — Escolha Múltipla (6 questões × 1,5 valores = 9 valores)</div>`;
+  html += `<p class="note" style="margin-bottom:1rem">Em cada questão são apresentadas cinco opções, das quais apenas uma é correta. Indica a opção que consideras verdadeira. Não é necessário apresentar cálculos.</p>`;
+
+  testState.mc.forEach((q,i)=>{
+    html += `<div class="card" id="mc-card-${i}">
+      <div class="q-header">
+        <div>
+          <span class="q-num">${i+1}.</span>
+          <span class="q-topic">${q.topic}</span>
+        </div>
+        <span class="q-points">1,5 valores</span>
+      </div>
+      <div class="q-body">${q.q}</div>
+      <div class="options">`;
+    const labels = ['A','B','C','D','E'];
+    q.options.forEach((opt,j)=>{
+      html += `<label class="opt" data-mc="${i}" data-opt="${j}">
+        <input type="radio" name="mc-${i}" value="${j}" onchange="selectMC(${i},${j})">
+        <span><span class="opt-label">(${labels[j]})</span> ${opt}</span>
+      </label>`;
+    });
+    html += `</div>
+      <div class="btns">
+        <button class="btn btn-warn" onclick="showHint('mc',${i})">Mostrar dica</button>
+      </div>
+      <div class="hint" id="hint-mc-${i}"></div>
+      <div class="solution" id="sol-mc-${i}"></div>
+    </div>`;
+  });
+
+  html += `<div class="part-header">Parte B — Desenvolvimento (11 valores)</div>`;
+  html += `<p class="note" style="margin-bottom:1rem">Justifica todas as afirmações e apresenta os cálculos realizados. Após a submissão, é apresentada a resolução comentada para auto-correção.</p>`;
+
+  testState.open.forEach((q,i)=>{
+    html += `<div class="card" id="open-card-${i}">
+      <div class="q-header">
+        <div>
+          <span class="q-num">${i+1}.</span>
+          <span class="q-topic">${q.topic}</span>
+        </div>
+        <span class="q-points">${q.points.toString().replace('.',',')} valores</span>
+      </div>
+      <div class="q-body">${q.q}</div>
+      <textarea class="open-answer" id="open-${i}" placeholder="Escreve aqui a tua resolução..." oninput="testState.answersOpen[${i}]=this.value"></textarea>
+      <div class="btns">
+        <button class="btn btn-warn" onclick="showHint('open',${i})">Mostrar dica</button>
+      </div>
+      <div class="hint" id="hint-open-${i}"></div>
+      <div class="solution" id="sol-open-${i}"></div>
+    </div>`;
+  });
+
+  html += `<div class="card" style="text-align:center">
+    <p style="margin-bottom:1rem;color:var(--muted)">Quando terminares, submete o teste para correção automática da Parte A e visualização das resoluções da Parte B.</p>
+    <div class="btns" style="justify-content:center">
+      <button class="btn btn-success" onclick="submitTest()">Submeter Teste</button>
+      <button class="btn btn-secondary" onclick="if(confirm('Tens a certeza? Vais perder o progresso.'))renderStart()">Cancelar</button>
+    </div>
+  </div>`;
+
+  app.innerHTML = html;
+  renderMath();
+}
+
+function selectMC(i,j){
+  testState.answersMC[i] = j;
+  const card = document.getElementById(`mc-card-${i}`);
+  card.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+  card.querySelector(`.opt[data-opt="${j}"]`).classList.add('selected');
+}
+
+function showHint(type, i){
+  const q = type==='mc' ? testState.mc[i] : testState.open[i];
+  const el = document.getElementById(`hint-${type}-${i}`);
+  // mostra dicas progressivas
+  const current = el.dataset.shown ? parseInt(el.dataset.shown) : 0;
+  if(current >= q.hints.length){
+    return;
+  }
+  const next = current + 1;
+  el.dataset.shown = next;
+  let html = `<div class="hint-label">Dica${next>1?'s':''}</div>`;
+  for(let k=0;k<next;k++){
+    html += `<p style="margin-bottom:.4rem">• ${q.hints[k]}</p>`;
+  }
+  if(next < q.hints.length){
+    html += `<p style="margin-top:.6rem;font-size:.82rem;color:var(--muted);font-style:italic">Pressiona novamente para mais ${q.hints.length - next} dica${q.hints.length-next>1?'s':''}.</p>`;
+  }
+  el.innerHTML = html;
+  el.classList.add('show');
+  renderMath();
+}
+
+/* --------- Submeter teste --------- */
+function submitTest(){
+  if(testState.submitted) return;
+  testState.submitted = true;
+  stopTimer();
+  let mcScore = 0;
+  const mcResults = [];
+
+  testState.mc.forEach((q,i)=>{
+    const ans = testState.answersMC[i];
+    const correct = ans === q.correct;
+    if(correct) mcScore += 1.5;
+    mcResults.push({i,ans,correct});
+
+    // marcar opções
+    const card = document.getElementById(`mc-card-${i}`);
+    card.querySelectorAll('.opt').forEach(o=>{
+      const optIdx = parseInt(o.dataset.opt);
+      o.classList.remove('selected');
+      if(optIdx === q.correct) o.classList.add('correct');
+      if(ans === optIdx && !correct) o.classList.add('wrong');
+      o.querySelector('input').disabled = true;
+    });
+
+    // mostrar solução
+    const sol = document.getElementById(`sol-mc-${i}`);
+    sol.innerHTML = `<h4>${correct?'✓ Correta':'✗ Incorreta'} (resposta: ${['A','B','C','D','E'][q.correct]})</h4><div>${q.sol}</div>`;
+    sol.classList.add('show');
+  });
+
+  // mostrar soluções Parte B
+  testState.open.forEach((q,i)=>{
+    const sol = document.getElementById(`sol-open-${i}`);
+    sol.innerHTML = `<h4>Resolução comentada — auto-corrige a tua resposta</h4>${q.sol}`;
+    sol.classList.add('show');
+    document.getElementById(`open-${i}`).disabled = true;
+  });
+
+  // resumo no topo
+  const totalOpen = testState.open.reduce((acc,q)=>acc+q.points,0);
+  const summary = document.createElement('div');
+  summary.className = 'card results-summary';
+  summary.id = 'results-card';
+  const pct = (mcScore / 9 * 100).toFixed(0);
+  summary.innerHTML = `
+    <h2 style="color:var(--accent)">Resultado da Parte A</h2>
+    <div class="score-big">${mcScore.toString().replace('.',',')} / 9 val</div>
+    <div class="score-detail">Acertaste ${mcResults.filter(r=>r.correct).length} de 6 questões (${pct}%)</div>
+    <div class="progress" style="max-width:300px;margin:1rem auto"><div class="progress-bar" style="width:${pct}%"></div></div>
+    <p style="margin-top:1rem;color:var(--muted)">A Parte B tem ${totalOpen.toString().replace('.',',')} valores. Compara a tua resolução com a apresentada em cada questão para te auto-avaliares.</p>
+    <div class="btns" style="justify-content:center;margin-top:1.5rem">
+      <button class="btn btn-primary" onclick="startTest()">Fazer Novo Teste (Diferente)</button>
+      <button class="btn btn-secondary" onclick="window.scrollTo({top:0,behavior:'smooth'})">Voltar ao Topo</button>
+      <button class="btn btn-secondary" onclick="renderStart()">Ecrã Inicial</button>
+    </div>
+  `;
+  app.insertBefore(summary, app.firstChild);
+  renderMath();
+  summary.scrollIntoView({behavior:'smooth'});
+}
+
+/* --------- Boot --------- */
+renderStart();
+</script>
+
+</body>
+</html>
