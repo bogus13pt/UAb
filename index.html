@@ -82,6 +82,22 @@ footer{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:.85rem;b
 .topics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.6rem;margin:1rem 0}
 .topic-chip{background:var(--panel2);padding:.5rem .8rem;border-radius:6px;border:1px solid var(--border);font-size:.85rem}
 .note{font-size:.85rem;color:var(--muted);margin-top:.5rem;font-style:italic}
+.modes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.5rem 0}
+.mode-card{background:var(--panel2);border:2px solid var(--border);border-radius:10px;padding:1.3rem;
+  cursor:pointer;transition:all .2s;text-align:left;display:flex;flex-direction:column;gap:.5rem}
+.mode-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 20px rgba(56,189,248,.15)}
+.mode-card h3{color:var(--accent);font-size:1.1rem}
+.mode-card .mode-meta{font-size:.85rem;color:var(--warn);font-weight:600}
+.mode-card .mode-desc{font-size:.9rem;color:var(--muted);flex-grow:1}
+.mode-card .mode-btn{margin-top:.6rem;padding:.5rem;background:var(--accent);color:#0c1220;border-radius:6px;text-align:center;font-weight:600;font-size:.85rem}
+.topic-picker{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.7rem;margin:1.2rem 0}
+.topic-btn{background:var(--panel2);border:1px solid var(--border);padding:.9rem 1rem;border-radius:8px;
+  cursor:pointer;color:var(--txt);font-size:.95rem;font-weight:600;text-align:left;transition:all .15s;
+  display:flex;justify-content:space-between;align-items:center;gap:.5rem;font-family:inherit}
+.topic-btn:hover{background:#475569;border-color:var(--accent)}
+.topic-btn .topic-count{font-size:.75rem;color:var(--muted);font-weight:400;background:rgba(0,0,0,.3);padding:.2rem .5rem;border-radius:4px}
+.mode-badge{display:inline-block;padding:.25rem .7rem;background:rgba(56,189,248,.15);color:var(--accent);
+  border:1px solid rgba(56,189,248,.3);border-radius:4px;font-size:.78rem;font-weight:600;margin-bottom:.5rem}
 @media (max-width:600px){
   main{padding:1rem}
   .card{padding:1rem}
@@ -444,6 +460,394 @@ const MC_BANK = [
       'Nova média = (soma + 16) / 6.'
     ],
     sol:'Nova média = $\\frac{50+16}{6} = \\frac{66}{6} = 11$. Opção (B).'
+  },
+  {
+    id:'MC33', topic:'Estatística - Mediana',
+    q:'A mediana do conjunto de dados $\\{3, 7, 8, 5, 12, 14, 21, 13, 18\\}$ é:',
+    options:['$8$','$11$','$12$','$13$','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      'Ordena os dados por ordem crescente.',
+      'Para 9 valores, a mediana é o 5.º elemento.'
+    ],
+    sol:'Ordenado: $3,5,7,8,\\underline{12},13,14,18,21$. Mediana = 12. Opção (C).'
+  },
+  {
+    id:'MC34', topic:'Estatística - Mediana',
+    q:'A mediana do conjunto $\\{2, 5, 7, 9, 12, 14\\}$ é:',
+    options:['$7$','$8$','$9$','$7,5$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Para um número par de dados, a mediana é a média dos dois valores centrais.'
+    ],
+    sol:'Os dois centrais são 7 e 9. Mediana = $(7+9)/2 = 8$. Opção (B).'
+  },
+  {
+    id:'MC35', topic:'Estatística - Moda',
+    q:'A moda do conjunto $\\{2, 3, 3, 5, 7, 3, 8, 5, 9, 3\\}$ é:',
+    options:['$2$','$3$','$5$','$7$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Moda = valor com maior frequência absoluta.'
+    ],
+    sol:'O valor 3 aparece 4 vezes (mais que qualquer outro). Moda = 3. Opção (B).'
+  },
+  {
+    id:'MC36', topic:'Estatística - Frequência',
+    q:'Num conjunto de 50 dados, uma classe tem frequência absoluta 10. A sua frequência relativa é:',
+    options:['$0,1$','$0,2$','$0,5$','$5$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Frequência relativa = frequência absoluta / total.'
+    ],
+    sol:'$f_r = 10/50 = 0,2$. Opção (B).'
+  },
+  {
+    id:'MC37', topic:'Estatística - Amplitude',
+    q:'A amplitude do conjunto $\\{4, 7, 9, 12, 15, 18, 22\\}$ é:',
+    options:['$15$','$18$','$22$','$26$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Amplitude = máximo − mínimo.'
+    ],
+    sol:'Amplitude = $\\max - \\min = 22-4 = 18$. Opção (B).'
+  },
+  {
+    id:'MC38', topic:'Funções - Domínio',
+    q:'O domínio de $f(x)=\\dfrac{1}{\\sqrt{x-1}}$ é:',
+    options:['$[1,+\\infty[$','$]1,+\\infty[$','$\\mathbb{R}\\setminus\\{1\\}$','$]-\\infty,1[$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Raiz quadrada exige radicando $\\geq 0$, mas como está no denominador, exige $> 0$.'
+    ],
+    sol:'$x-1>0 \\iff x>1$. Domínio = $]1,+\\infty[$. Opção (B).'
+  },
+  {
+    id:'MC39', topic:'Funções - Composição',
+    q:'Sejam $f(x)=x+2$ e $g(x)=x^2$. Então $(f\\circ g)(3)$ é:',
+    options:['$11$','$25$','$5$','$9$','Nenhuma das opções anteriores.'],
+    correct:0,
+    hints:[
+      '$(f\\circ g)(x) = f(g(x))$.',
+      'Primeiro calcula $g(3)$, depois $f$ desse valor.'
+    ],
+    sol:'$g(3)=9$, $f(9)=9+2=11$. Opção (A).'
+  },
+  {
+    id:'MC40', topic:'Funções - Inversa',
+    q:'A função inversa de $f(x)=3x-6$ é:',
+    options:['$f^{-1}(x)=\\frac{x-6}{3}$','$f^{-1}(x)=\\frac{x+6}{3}$','$f^{-1}(x)=3x+6$','$f^{-1}(x)=\\frac{1}{3x-6}$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Troca $x$ por $y$ e resolve em ordem a $y$.'
+    ],
+    sol:'$y=3x-6 \\iff x = \\frac{y+6}{3}$. Logo $f^{-1}(x) = \\frac{x+6}{3}$. Opção (B).'
+  },
+  {
+    id:'MC41', topic:'Funções - Paridade',
+    q:'A função $f(x)=x^3$ é:',
+    options:['par.','ímpar.','par e ímpar.','nem par nem ímpar.','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Função ímpar: $f(-x)=-f(x)$. Função par: $f(-x)=f(x)$.'
+    ],
+    sol:'$f(-x)=(-x)^3=-x^3=-f(x)$. É ímpar. Opção (B).'
+  },
+  {
+    id:'MC42', topic:'Combinatória - Permutações',
+    q:'O número de anagramas distintos da palavra CASA é:',
+    options:['$24$','$12$','$6$','$4$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Permutações com repetição: $\\frac{n!}{n_1!\\cdot n_2!\\cdots}$.',
+      'A letra A repete-se 2 vezes.'
+    ],
+    sol:'$\\frac{4!}{2!} = \\frac{24}{2} = 12$. Opção (B).'
+  },
+  {
+    id:'MC43', topic:'Probabilidades - Condicional',
+    q:'Sejam $A$ e $B$ acontecimentos com $P(A)=0,4$, $P(B)=0,5$ e $P(A\\cap B)=0,2$. Então $P(A|B)$ é:',
+    options:['$0,2$','$0,4$','$0,5$','$0,8$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      '$P(A|B) = \\frac{P(A\\cap B)}{P(B)}$.'
+    ],
+    sol:'$P(A|B) = \\frac{0,2}{0,5} = 0,4$. Opção (B).'
+  },
+  {
+    id:'MC44', topic:'Probabilidades',
+    q:'Uma caixa tem 4 bolas vermelhas e 6 azuis. Tiram-se 2 bolas simultaneamente. Qual a probabilidade de ambas serem vermelhas?',
+    options:['$\\frac{2}{15}$','$\\frac{4}{25}$','$\\frac{1}{5}$','$\\frac{6}{45}$','Nenhuma das opções anteriores.'],
+    correct:0,
+    hints:[
+      'Usa combinações: casos favoráveis $^4C_2$ sobre casos possíveis $^{10}C_2$.'
+    ],
+    sol:'$P = \\frac{^4C_2}{^{10}C_2} = \\frac{6}{45} = \\frac{2}{15}$. Opção (A).'
+  },
+  {
+    id:'MC45', topic:'Probabilidades',
+    q:'Lança-se um dado equilibrado e uma moeda equilibrada. A probabilidade de sair número par no dado e coroa na moeda é:',
+    options:['$\\frac{1}{2}$','$\\frac{1}{3}$','$\\frac{1}{4}$','$\\frac{1}{6}$','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      'Acontecimentos independentes: multiplicam-se as probabilidades.'
+    ],
+    sol:'$P(\\text{par})\\cdot P(\\text{coroa}) = \\frac{1}{2}\\cdot\\frac{1}{2} = \\frac{1}{4}$. Opção (C).'
+  },
+  {
+    id:'MC46', topic:'Sucessões - PA',
+    q:'A soma dos 20 primeiros termos da progressão aritmética $3, 5, 7, 9, \\ldots$ é:',
+    options:['$400$','$420$','$440$','$460$','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      '$S_n = \\frac{n(a_1+a_n)}{2}$.',
+      '$a_{20} = a_1 + 19r = 3 + 19\\cdot 2 = 41$.'
+    ],
+    sol:'$S_{20} = \\frac{20(3+41)}{2} = 10\\cdot 44 = 440$. Opção (C).'
+  },
+  {
+    id:'MC47', topic:'Sucessões - PG',
+    q:'O 5.º termo da progressão geométrica $2, 6, 18, 54, \\ldots$ é:',
+    options:['$108$','$162$','$216$','$324$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      '$a_n = a_1\\cdot r^{n-1}$. Razão $r=3$.'
+    ],
+    sol:'$a_5 = 2\\cdot 3^4 = 2\\cdot 81 = 162$. Opção (B).'
+  },
+  {
+    id:'MC48', topic:'Sucessões - PG',
+    q:'A soma dos 5 primeiros termos da PG $3, 6, 12, 24, \\ldots$ é:',
+    options:['$45$','$63$','$93$','$96$','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      '$S_n = a_1\\cdot\\frac{r^n - 1}{r - 1}$. $r=2$.'
+    ],
+    sol:'$S_5 = 3\\cdot\\frac{2^5-1}{2-1} = 3\\cdot 31 = 93$. Opção (C).'
+  },
+  {
+    id:'MC49', topic:'Sucessões - Série geométrica',
+    q:'A soma da série geométrica $1 + \\frac{1}{2} + \\frac{1}{4} + \\frac{1}{8} + \\ldots$ é:',
+    options:['$1$','$\\frac{3}{2}$','$2$','$+\\infty$','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      'Série geométrica convergente: $S = \\frac{a_1}{1-r}$ com $|r|<1$.'
+    ],
+    sol:'$S = \\frac{1}{1-1/2} = 2$. Opção (C).'
+  },
+  {
+    id:'MC50', topic:'Limites - Indeterminação',
+    q:'O limite $\\displaystyle\\lim_{x\\to 2}\\dfrac{x^2-4}{x-2}$ é:',
+    options:['$0$','$2$','$4$','Não existe','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      'Indeterminação $\\frac{0}{0}$. Fatoriza o numerador.',
+      '$x^2-4 = (x-2)(x+2)$.'
+    ],
+    sol:'$\\frac{(x-2)(x+2)}{x-2} = x+2 \\to 4$. Opção (C).'
+  },
+  {
+    id:'MC51', topic:'Limites - Infinito',
+    q:'$\\displaystyle\\lim_{x\\to +\\infty}\\dfrac{x^2+1}{x+1}$ é igual a:',
+    options:['$0$','$1$','$+\\infty$','$2$','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      'Grau do numerador maior que o do denominador.'
+    ],
+    sol:'$\\frac{x^2+1}{x+1} \\approx x$ para $x$ grande, logo $\\to +\\infty$. Opção (C).'
+  },
+  {
+    id:'MC52', topic:'Limites - Notável',
+    q:'$\\displaystyle\\lim_{x\\to 0}\\dfrac{1-\\cos x}{x^2}$ é igual a:',
+    options:['$0$','$\\frac{1}{2}$','$1$','$2$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Limite notável: $\\lim_{x\\to 0}\\frac{1-\\cos x}{x^2} = \\frac{1}{2}$.'
+    ],
+    sol:'Limite notável conhecido: $\\frac{1}{2}$. Opção (B).'
+  },
+  {
+    id:'MC53', topic:'Limites - Exponencial',
+    q:'$\\displaystyle\\lim_{x\\to +\\infty} e^{-x}$ é igual a:',
+    options:['$0$','$1$','$e$','$+\\infty$','Nenhuma das opções anteriores.'],
+    correct:0,
+    hints:[
+      '$e^{-x} = 1/e^x$. Quando $x\\to+\\infty$, $e^x\\to+\\infty$.'
+    ],
+    sol:'$e^{-x} = 1/e^x \\to 0$. Opção (A).'
+  },
+  {
+    id:'MC54', topic:'Logaritmos',
+    q:'A solução da equação $\\log_{10}(x) = 2$ é:',
+    options:['$x=2$','$x=10$','$x=20$','$x=100$','Nenhuma das opções anteriores.'],
+    correct:3,
+    hints:[
+      'Aplica a definição: $\\log_a(b)=c \\iff a^c=b$.'
+    ],
+    sol:'$\\log_{10}(x)=2 \\iff x=10^2 = 100$. Opção (D).'
+  },
+  {
+    id:'MC55', topic:'Logaritmos',
+    q:'A solução da equação $\\ln(x) = 1$ é:',
+    options:['$x=0$','$x=1$','$x=e$','$x=10$','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      '$\\ln$ é o logaritmo de base $e$.'
+    ],
+    sol:'$\\ln(x)=1 \\iff x=e$. Opção (C).'
+  },
+  {
+    id:'MC56', topic:'Logaritmos - Propriedades',
+    q:'$\\log_{10}(8) + \\log_{10}(125)$ é igual a:',
+    options:['$2$','$3$','$\\log_{10}(133)$','$\\log_{10}(1000)$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Propriedade: $\\log(a) + \\log(b) = \\log(a\\cdot b)$.',
+      '$8 \\times 125 = 1000$.'
+    ],
+    sol:'$\\log_{10}(8\\cdot 125) = \\log_{10}(1000) = 3$. Opção (B).'
+  },
+  {
+    id:'MC57', topic:'Exponenciais',
+    q:'A solução da equação $3^{2x} = 27$ é:',
+    options:['$x=\\frac{3}{2}$','$x=3$','$x=\\frac{1}{2}$','$x=9$','Nenhuma das opções anteriores.'],
+    correct:0,
+    hints:[
+      '$27 = 3^3$. Iguala expoentes.'
+    ],
+    sol:'$3^{2x}=3^3 \\iff 2x=3 \\iff x=\\frac{3}{2}$. Opção (A).'
+  },
+  {
+    id:'MC58', topic:'Derivadas - Polinomial',
+    q:'A derivada de $f(x) = 4x^5 - 2x^3 + 7$ é:',
+    options:['$20x^4 - 6x^2$','$20x^4 - 6x^2 + 7$','$4x^4 - 2x^2$','$5x^4 - 3x^2$','Nenhuma das opções anteriores.'],
+    correct:0,
+    hints:[
+      'Regra: $(x^n)\' = nx^{n-1}$. Derivada de constante é 0.'
+    ],
+    sol:'$f\'(x) = 20x^4 - 6x^2$. Opção (A).'
+  },
+  {
+    id:'MC59', topic:'Derivadas - Raiz',
+    q:'A derivada de $f(x) = \\sqrt{x}$ é:',
+    options:['$\\frac{1}{2\\sqrt{x}}$','$\\frac{1}{\\sqrt{x}}$','$2\\sqrt{x}$','$\\frac{1}{2x}$','Nenhuma das opções anteriores.'],
+    correct:0,
+    hints:[
+      '$\\sqrt{x} = x^{1/2}$. Aplica $(x^n)\' = nx^{n-1}$.'
+    ],
+    sol:'$f\'(x) = \\frac{1}{2}x^{-1/2} = \\frac{1}{2\\sqrt{x}}$. Opção (A).'
+  },
+  {
+    id:'MC60', topic:'Derivadas - Cadeia',
+    q:'A derivada de $f(x) = \\sin(x^2)$ é:',
+    options:['$\\cos(x^2)$','$2x\\cos(x^2)$','$2\\cos(x)$','$\\cos(2x)$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Regra da cadeia: $(\\sin g(x))\' = g\'(x)\\cos g(x)$.'
+    ],
+    sol:'$f\'(x) = 2x\\cos(x^2)$. Opção (B).'
+  },
+  {
+    id:'MC61', topic:'Derivadas - Cadeia',
+    q:'A derivada de $f(x) = (3x+1)^4$ é:',
+    options:['$4(3x+1)^3$','$12(3x+1)^3$','$(3x+1)^3$','$4(3x+1)^3 \\cdot 3x$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Regra da cadeia: $(u^n)\' = n\\cdot u^{n-1}\\cdot u\'$.'
+    ],
+    sol:'$f\'(x) = 4(3x+1)^3 \\cdot 3 = 12(3x+1)^3$. Opção (B).'
+  },
+  {
+    id:'MC62', topic:'Derivadas - Trigonométricas',
+    q:'A derivada de $f(x) = \\tan(x)$ é:',
+    options:['$\\cot(x)$','$\\sec^2(x)$','$\\sin(x)/\\cos(x)$','$-\\sec^2(x)$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Recorda: $\\tan(x) = \\sin(x)/\\cos(x)$. Aplica regra do quociente.'
+    ],
+    sol:'$(\\tan x)\' = \\frac{1}{\\cos^2 x} = \\sec^2 x$. Opção (B).'
+  },
+  {
+    id:'MC63', topic:'Derivadas - Tangente',
+    q:'A equação da reta tangente ao gráfico de $f(x)=x^2$ no ponto de abcissa $x=1$ é:',
+    options:['$y = x$','$y = 2x - 1$','$y = 2x$','$y = x - 1$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Reta tangente em $x_0$: $y = f(x_0) + f\'(x_0)(x-x_0)$.',
+      '$f\'(x) = 2x$.'
+    ],
+    sol:'$f(1)=1$, $f\'(1)=2$. Reta: $y = 1 + 2(x-1) = 2x - 1$. Opção (B).'
+  },
+  {
+    id:'MC64', topic:'Trigonometria',
+    q:'$\\sin\\left(\\dfrac{\\pi}{4}\\right) + \\cos\\left(\\dfrac{\\pi}{4}\\right)$ é igual a:',
+    options:['$0$','$1$','$\\sqrt{2}$','$\\frac{\\sqrt{2}}{2}$','Nenhuma das opções anteriores.'],
+    correct:2,
+    hints:[
+      '$\\sin(\\pi/4) = \\cos(\\pi/4) = \\frac{\\sqrt{2}}{2}$.'
+    ],
+    sol:'$\\frac{\\sqrt{2}}{2} + \\frac{\\sqrt{2}}{2} = \\sqrt{2}$. Opção (C).'
+  },
+  {
+    id:'MC65', topic:'Trigonometria - Identidade',
+    q:'A expressão $\\sin^2(x) + \\cos^2(x)$ é igual a:',
+    options:['$0$','$1$','$2$','$\\sin(2x)$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Identidade fundamental da trigonometria.'
+    ],
+    sol:'$\\sin^2(x) + \\cos^2(x) = 1$ (identidade fundamental). Opção (B).'
+  },
+  {
+    id:'MC66', topic:'Funções - Módulo',
+    q:'As soluções da equação $|2x - 4| = 6$ são:',
+    options:['$x=5$ e $x=1$','$x=5$ e $x=-1$','$x=3$ e $x=-3$','Apenas $x=5$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      '$|A| = k \\iff A = k \\lor A = -k$ (com $k\\geq 0$).'
+    ],
+    sol:'$2x-4=6 \\Rightarrow x=5$ ou $2x-4=-6 \\Rightarrow x=-1$. Opção (B).'
+  },
+  {
+    id:'MC67', topic:'Funções - Quadrática',
+    q:'O vértice da parábola $y = x^2 - 6x + 5$ tem coordenadas:',
+    options:['$(3, -4)$','$(-3, 4)$','$(6, 5)$','$(3, 4)$','Nenhuma das opções anteriores.'],
+    correct:0,
+    hints:[
+      '$x_v = -\\frac{b}{2a}$ e $y_v = f(x_v)$.'
+    ],
+    sol:'$x_v = \\frac{6}{2} = 3$. $y_v = 9-18+5 = -4$. Vértice $(3,-4)$. Opção (A).'
+  },
+  {
+    id:'MC68', topic:'Sucessões - Limites',
+    q:'$\\displaystyle\\lim_{n\\to +\\infty}\\dfrac{n^2-3n}{2n^2+1}$ é igual a:',
+    options:['$0$','$\\frac{1}{2}$','$1$','$+\\infty$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Coeficientes dos termos de maior grau.'
+    ],
+    sol:'$\\lim \\frac{n^2-3n}{2n^2+1} = \\frac{1}{2}$. Opção (B).'
+  },
+  {
+    id:'MC69', topic:'Funções - Domínio',
+    q:'O domínio de $f(x) = \\sqrt{9 - x^2}$ é:',
+    options:['$\\mathbb{R}$','$[-3, 3]$','$]-3, 3[$','$[0, 9]$','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Raiz quadrada exige $9-x^2 \\geq 0$.'
+    ],
+    sol:'$9-x^2 \\geq 0 \\iff x^2 \\leq 9 \\iff -3\\leq x \\leq 3$. Domínio = $[-3,3]$. Opção (B).'
+  },
+  {
+    id:'MC70', topic:'Sucessões - Monotonia',
+    q:'A sucessão $a_n = \\dfrac{n+1}{n}$ é:',
+    options:['monótona crescente.','monótona decrescente.','não monótona.','constante.','Nenhuma das opções anteriores.'],
+    correct:1,
+    hints:[
+      'Calcula $a_{n+1} - a_n$ ou compara $a_n$ com $a_{n+1}$.',
+      '$a_n = 1 + \\frac{1}{n}$.'
+    ],
+    sol:'$a_n = 1 + \\frac{1}{n}$. Como $\\frac{1}{n}$ decresce com $n$, $a_n$ é monótona decrescente. Opção (B).'
   }
 ];
 
@@ -614,6 +1018,214 @@ const OPEN_BANK = [
     sol:`<p><strong>a)</strong> $(f\\circ g)(x) = f(g(x)) = f(x^2) = 2x^2+1$.</p>
 <p><strong>b)</strong> $(g\\circ f)(x) = g(f(x)) = g(2x+1) = (2x+1)^2$.</p>
 <p><strong>c)</strong> $y=2x+1 \\iff x=\\frac{y-1}{2}$. Logo, $f^{-1}(x) = \\mathbf{\\frac{x-1}{2}}$.</p>`
+  },
+  {
+    id:'OP11', topic:'Funções - Quadrática', points:3,
+    q:`<p>Considere a função $f(x) = -x^2 + 4x$.</p>
+<p><strong>a)</strong> (1 valor) Determine os zeros de $f$.</p>
+<p><strong>b)</strong> (1 valor) Determine as coordenadas do vértice.</p>
+<p><strong>c)</strong> (1 valor) Indique o contradomínio e os intervalos de monotonia.</p>`,
+    hints:[
+      'a) $-x^2+4x = -x(x-4)$.',
+      'b) $x_v = -\\frac{b}{2a}$.',
+      'c) Como $a=-1<0$, a parábola tem concavidade voltada para baixo.'
+    ],
+    sol:`<p><strong>a)</strong> $-x^2+4x=0 \\iff x(-x+4)=0 \\iff x=0 \\lor x=4$. Zeros: $0$ e $4$.</p>
+<p><strong>b)</strong> $x_v = -\\frac{4}{2(-1)} = 2$. $y_v = -4+8 = 4$. Vértice: $(2,4)$.</p>
+<p><strong>c)</strong> Como $a<0$, concavidade voltada para baixo. Contradomínio: $]-\\infty, 4]$. $f$ é crescente em $]-\\infty, 2]$ e decrescente em $[2, +\\infty[$.</p>`
+  },
+  {
+    id:'OP12', topic:'Funções - Racional', points:3,
+    q:`<p>Considere a função $f(x) = \\dfrac{2x-1}{x+3}$.</p>
+<p><strong>a)</strong> (1 valor) Determine o domínio de $f$.</p>
+<p><strong>b)</strong> (1 valor) Determine os zeros de $f$.</p>
+<p><strong>c)</strong> (1 valor) Determine as assíntotas vertical e horizontal.</p>`,
+    hints:[
+      'Domínio: denominador $\\neq 0$.',
+      'Zeros: numerador $= 0$ (desde que o ponto pertença ao domínio).',
+      'Assíntota horizontal: $\\lim_{x\\to\\pm\\infty} f(x)$.'
+    ],
+    sol:`<p><strong>a)</strong> $x+3 \\neq 0 \\iff x \\neq -3$. $D_f = \\mathbb{R}\\setminus\\{-3\\}$.</p>
+<p><strong>b)</strong> $2x-1=0 \\iff x=\\frac{1}{2}$. Zero: $x=\\frac{1}{2}$.</p>
+<p><strong>c)</strong> Assíntota vertical: $x=-3$ (anula o denominador). Assíntota horizontal: $\\lim_{x\\to\\pm\\infty}\\frac{2x-1}{x+3} = 2$, logo $y=2$.</p>`
+  },
+  {
+    id:'OP13', topic:'Probabilidades', points:4,
+    q:`<p>Numa empresa, 60% dos colaboradores são homens e 40% são mulheres. Sabe-se ainda que 50% dos homens e 80% das mulheres trabalham em regime de part-time.</p>
+<p><strong>a)</strong> (2 valores) Escolhendo um colaborador ao acaso, qual a probabilidade de trabalhar em part-time?</p>
+<p><strong>b)</strong> (2 valores) Sabendo que um colaborador escolhido ao acaso trabalha em part-time, qual a probabilidade de ser homem?</p>`,
+    hints:[
+      'a) Lei da probabilidade total: $P(PT) = P(PT|H)P(H) + P(PT|M)P(M)$.',
+      'b) Teorema de Bayes: $P(H|PT) = \\frac{P(PT|H)P(H)}{P(PT)}$.'
+    ],
+    sol:`<p><strong>a)</strong> $P(PT) = P(PT|H)\\cdot P(H) + P(PT|M)\\cdot P(M) = 0,5\\cdot 0,6 + 0,8\\cdot 0,4 = 0,3 + 0,32 = \\mathbf{0,62}$.</p>
+<p><strong>b)</strong> $P(H|PT) = \\dfrac{P(PT|H)\\cdot P(H)}{P(PT)} = \\dfrac{0,3}{0,62} \\approx \\mathbf{0,484}$ (≈ 48,4%).</p>`
+  },
+  {
+    id:'OP14', topic:'Sucessões', points:3,
+    q:`<p>Considere a sucessão definida por $a_n = 3n^2 - 2n$.</p>
+<p><strong>a)</strong> (1 valor) Calcule $a_1$, $a_2$ e $a_5$.</p>
+<p><strong>b)</strong> (1 valor) Determine $a_{n+1} - a_n$ em função de $n$.</p>
+<p><strong>c)</strong> (1 valor) Mostre que a sucessão é estritamente crescente.</p>`,
+    hints:[
+      'a) Substitui $n$ pelos valores indicados.',
+      'b) Expande $a_{n+1} = 3(n+1)^2 - 2(n+1)$ e subtrai $a_n$.',
+      'c) Mostra que $a_{n+1} - a_n > 0$ para $n \\geq 1$.'
+    ],
+    sol:`<p><strong>a)</strong> $a_1 = 3-2 = 1$. $a_2 = 12-4 = 8$. $a_5 = 75-10 = 65$.</p>
+<p><strong>b)</strong> $a_{n+1} = 3(n+1)^2 - 2(n+1) = 3n^2+6n+3-2n-2 = 3n^2+4n+1$. $a_{n+1}-a_n = (3n^2+4n+1) - (3n^2-2n) = \\mathbf{6n+1}$.</p>
+<p><strong>c)</strong> Para $n\\geq 1$, $6n+1 > 0$, logo $a_{n+1} > a_n$. A sucessão é estritamente crescente.</p>`
+  },
+  {
+    id:'OP15', topic:'Combinatória e Probabilidades', points:4,
+    q:`<p>Um cesto contém 10 frutos: 4 maçãs, 3 peras e 3 laranjas. Tiram-se 3 frutos ao acaso, sem reposição.</p>
+<p><strong>a)</strong> (1 valor) Quantos grupos diferentes de 3 frutos é possível formar?</p>
+<p><strong>b)</strong> (1,5 valores) Qual a probabilidade de os 3 frutos serem todos maçãs?</p>
+<p><strong>c)</strong> (1,5 valores) Qual a probabilidade de haver exatamente 1 maçã?</p>`,
+    hints:[
+      'a) Combinações de 10 a 3: $^{10}C_3$.',
+      'b) Casos favoráveis: $^4C_3$.',
+      'c) Casos favoráveis: $^4C_1 \\times {}^6C_2$.'
+    ],
+    sol:`<p><strong>a)</strong> $^{10}C_3 = \\frac{10!}{3!7!} = \\mathbf{120}$ grupos.</p>
+<p><strong>b)</strong> $P(3 \\text{ maçãs}) = \\dfrac{^4C_3}{^{10}C_3} = \\dfrac{4}{120} = \\mathbf{\\dfrac{1}{30}}$.</p>
+<p><strong>c)</strong> $P(\\text{exatamente 1 maçã}) = \\dfrac{^4C_1 \\cdot {}^6C_2}{^{10}C_3} = \\dfrac{4\\cdot 15}{120} = \\dfrac{60}{120} = \\mathbf{\\dfrac{1}{2}}$.</p>`
+  },
+  {
+    id:'OP16', topic:'Limites', points:3,
+    q:`<p>Calcule os seguintes limites, justificando os procedimentos:</p>
+<p><strong>a)</strong> (1 valor) $\\displaystyle\\lim_{x\\to 3}\\dfrac{x^2-9}{x-3}$.</p>
+<p><strong>b)</strong> (1 valor) $\\displaystyle\\lim_{x\\to 0}\\dfrac{\\sin(2x)}{\\sin(3x)}$.</p>
+<p><strong>c)</strong> (1 valor) $\\displaystyle\\lim_{n\\to +\\infty}\\dfrac{2n+1}{n-3}$.</p>`,
+    hints:[
+      'a) Indeterminação $\\frac{0}{0}$; fatoriza.',
+      'b) Multiplica e divide para obter $\\frac{\\sin u}{u}$.',
+      'c) Coeficientes do termo de maior grau.'
+    ],
+    sol:`<p><strong>a)</strong> $\\frac{x^2-9}{x-3} = \\frac{(x-3)(x+3)}{x-3} = x+3 \\to \\mathbf{6}$.</p>
+<p><strong>b)</strong> $\\frac{\\sin(2x)}{\\sin(3x)} = \\frac{\\sin(2x)/2x \\cdot 2x}{\\sin(3x)/3x \\cdot 3x} = \\frac{2x}{3x}\\cdot\\frac{\\sin(2x)/(2x)}{\\sin(3x)/(3x)} \\to \\frac{2}{3}\\cdot\\frac{1}{1} = \\mathbf{\\frac{2}{3}}$.</p>
+<p><strong>c)</strong> $\\frac{2n+1}{n-3} = \\frac{2+1/n}{1-3/n} \\to \\mathbf{2}$.</p>`
+  },
+  {
+    id:'OP17', topic:'Derivadas - Aplicação', points:4,
+    q:`<p>Considere a função $f(x) = x^3 - 6x^2 + 9x$.</p>
+<p><strong>a)</strong> (1 valor) Calcule $f\'(x)$.</p>
+<p><strong>b)</strong> (1,5 valores) Determine os zeros de $f\'$ e estude o sinal de $f\'$.</p>
+<p><strong>c)</strong> (1,5 valores) Identifique os extremos relativos de $f$.</p>`,
+    hints:[
+      'Para os extremos, analisa onde $f\'(x)$ muda de sinal.'
+    ],
+    sol:`<p><strong>a)</strong> $f\'(x) = 3x^2 - 12x + 9 = 3(x^2 - 4x + 3)$.</p>
+<p><strong>b)</strong> $x^2-4x+3=0 \\iff (x-1)(x-3)=0 \\iff x=1 \\lor x=3$. Sinal: $f\'>0$ em $]-\\infty,1[\\cup]3,+\\infty[$; $f\'<0$ em $]1,3[$.</p>
+<p><strong>c)</strong> Máximo relativo em $x=1$: $f(1) = 1-6+9 = \\mathbf{4}$. Mínimo relativo em $x=3$: $f(3) = 27-54+27 = \\mathbf{0}$.</p>`
+  },
+  {
+    id:'OP18', topic:'Exponenciais e Logaritmos', points:4,
+    q:`<p>Resolva as seguintes equações:</p>
+<p><strong>a)</strong> (2 valores) $2^{x+1} = 8^x$.</p>
+<p><strong>b)</strong> (2 valores) $\\ln(x^2 - 3x + 2) = 0$.</p>`,
+    hints:[
+      'a) Escreve $8$ como $2^3$ e iguala expoentes.',
+      'b) $\\ln(y)=0 \\iff y=1$. Depois resolve $x^2-3x+2=1$.'
+    ],
+    sol:`<p><strong>a)</strong> $2^{x+1} = (2^3)^x = 2^{3x} \\iff x+1 = 3x \\iff 2x=1 \\iff \\mathbf{x = \\frac{1}{2}}$.</p>
+<p><strong>b)</strong> $\\ln(x^2-3x+2)=0 \\iff x^2-3x+2 = 1 \\iff x^2-3x+1 = 0$.</p>
+<p>Pela fórmula resolvente: $x = \\frac{3\\pm\\sqrt{9-4}}{2} = \\frac{3\\pm\\sqrt{5}}{2}$.</p>
+<p>Verificação do domínio: ambas as soluções tornam $x^2-3x+2>0$ (pois $=1$). $\\mathbf{x = \\frac{3+\\sqrt{5}}{2} \\lor x = \\frac{3-\\sqrt{5}}{2}}$.</p>`
+  },
+  {
+    id:'OP19', topic:'Estatística Descritiva', points:3,
+    q:`<p>Os tempos (em minutos) que 10 alunos demoraram a resolver um exercício foram:</p>
+<p style="text-align:center"><strong>12, 15, 18, 15, 20, 22, 18, 15, 25, 20</strong></p>
+<p><strong>a)</strong> (1 valor) Calcule a média.</p>
+<p><strong>b)</strong> (1 valor) Determine a mediana.</p>
+<p><strong>c)</strong> (1 valor) Indique a moda e a amplitude.</p>`,
+    hints:[
+      'Média = soma / número de dados.',
+      'Para a mediana, ordena os dados primeiro.',
+      'Moda = valor mais frequente.'
+    ],
+    sol:`<p>Ordenado: $12, 15, 15, 15, 18, 18, 20, 20, 22, 25$.</p>
+<p><strong>a)</strong> Soma = $12+15+18+15+20+22+18+15+25+20 = 180$. Média = $180/10 = \\mathbf{18}$.</p>
+<p><strong>b)</strong> 10 valores → mediana = média dos centrais (5.º e 6.º): $(18+18)/2 = \\mathbf{18}$.</p>
+<p><strong>c)</strong> Moda = $\\mathbf{15}$ (3 ocorrências). Amplitude = $25 - 12 = \\mathbf{13}$.</p>`
+  },
+  {
+    id:'OP20', topic:'Funções Trigonométricas', points:3,
+    q:`<p>Considere a função $f(x) = 2\\sin(x) + 1$.</p>
+<p><strong>a)</strong> (1 valor) Indique o domínio e o contradomínio de $f$.</p>
+<p><strong>b)</strong> (1 valor) Determine os zeros de $f$ em $[0, 2\\pi]$.</p>
+<p><strong>c)</strong> (1 valor) Determine o valor máximo de $f$ e onde é atingido em $[0, 2\\pi]$.</p>`,
+    hints:[
+      '$\\sin(x) \\in [-1,1]$ para todo $x$.',
+      'Zeros: $2\\sin(x)+1=0 \\iff \\sin(x)=-\\frac{1}{2}$.'
+    ],
+    sol:`<p><strong>a)</strong> $D_f = \\mathbb{R}$. Como $\\sin(x)\\in[-1,1]$, temos $f(x) \\in [-1, 3]$. Contradomínio: $[-1, 3]$.</p>
+<p><strong>b)</strong> $\\sin(x) = -\\frac{1}{2}$ em $[0, 2\\pi]$ → $x = \\frac{7\\pi}{6}$ ou $x = \\frac{11\\pi}{6}$.</p>
+<p><strong>c)</strong> Máximo: $\\sin(x)=1 \\Rightarrow f(x) = 3$, atingido em $x = \\frac{\\pi}{2}$.</p>`
+  },
+  {
+    id:'OP21', topic:'Continuidade', points:3,
+    q:`<p>Considere a função $$f(x) = \\begin{cases} x^2 + 1 & \\text{se } x \\leq 1 \\\\ kx + 3 & \\text{se } x > 1 \\end{cases}$$</p>
+<p><strong>a)</strong> (1,5 valores) Determine o valor de $k$ de modo que $f$ seja contínua em $x=1$.</p>
+<p><strong>b)</strong> (1,5 valores) Para o valor de $k$ encontrado, verifique se $f$ é contínua em todo $\\mathbb{R}$.</p>`,
+    hints:[
+      'Para continuidade em $x=1$: $\\lim_{x\\to 1^-} = \\lim_{x\\to 1^+} = f(1)$.'
+    ],
+    sol:`<p><strong>a)</strong> $f(1) = 1^2+1 = 2$. $\\lim_{x\\to 1^-} (x^2+1) = 2$. $\\lim_{x\\to 1^+} (kx+3) = k+3$. Igualar: $k+3 = 2 \\iff \\mathbf{k = -1}$.</p>
+<p><strong>b)</strong> Com $k=-1$: cada ramo é polinomial (logo contínuo). A continuidade em $x=1$ está garantida pela alínea anterior. Logo, $f$ é contínua em $\\mathbb{R}$.</p>`
+  },
+  {
+    id:'OP22', topic:'Sucessões', points:4,
+    q:`<p>Considere a sucessão $a_n = \\dfrac{3n-1}{n+2}$.</p>
+<p><strong>a)</strong> (1 valor) Calcule $a_1$ e $a_2$.</p>
+<p><strong>b)</strong> (1,5 valores) Mostre que $a_n$ é estritamente crescente.</p>
+<p><strong>c)</strong> (1,5 valores) Calcule $\\lim_{n\\to+\\infty} a_n$ e indique se a sucessão é limitada.</p>`,
+    hints:[
+      'Reescreve $a_n$ na forma $3 - \\frac{7}{n+2}$.',
+      'Para crescimento, mostra que $a_{n+1} - a_n > 0$.'
+    ],
+    sol:`<p><strong>a)</strong> $a_1 = \\frac{2}{3}$. $a_2 = \\frac{5}{4}$.</p>
+<p><strong>b)</strong> $a_n = \\frac{3(n+2)-7}{n+2} = 3 - \\frac{7}{n+2}$. À medida que $n$ aumenta, $\\frac{7}{n+2}$ diminui, logo $a_n$ aumenta. <strong>Crescente</strong>.</p>
+<p><strong>c)</strong> $\\lim_{n\\to+\\infty} a_n = 3 - 0 = \\mathbf{3}$. Como $\\frac{2}{3} \\leq a_n < 3$, a sucessão é <strong>limitada</strong>.</p>`
+  },
+  {
+    id:'OP23', topic:'Combinatória', points:3,
+    q:`<p>Uma equipa de futebol tem 22 jogadores: 2 guarda-redes, 8 defesas, 6 médios e 6 avançados. Pretende-se constituir uma equipa de 11 jogadores: 1 guarda-redes, 4 defesas, 3 médios e 3 avançados.</p>
+<p><strong>a)</strong> (1,5 valores) Quantas equipas diferentes se podem formar?</p>
+<p><strong>b)</strong> (1,5 valores) Em quantas dessas equipas entra um determinado defesa fixo?</p>`,
+    hints:[
+      'a) Multiplica as combinações por posição.',
+      'b) Fixando 1 defesa, restam $^7C_3$ defesas a escolher.'
+    ],
+    sol:`<p><strong>a)</strong> $^2C_1 \\cdot {}^8C_4 \\cdot {}^6C_3 \\cdot {}^6C_3 = 2 \\cdot 70 \\cdot 20 \\cdot 20 = \\mathbf{56\\,000}$ equipas.</p>
+<p><strong>b)</strong> Com 1 defesa fixo: $^2C_1 \\cdot {}^7C_3 \\cdot {}^6C_3 \\cdot {}^6C_3 = 2 \\cdot 35 \\cdot 20 \\cdot 20 = \\mathbf{28\\,000}$ equipas.</p>`
+  },
+  {
+    id:'OP24', topic:'Probabilidades - Bayes', points:4,
+    q:`<p>Duas máquinas $M_1$ e $M_2$ produzem peças. $M_1$ produz 60% das peças, das quais 2% têm defeito. $M_2$ produz 40% das peças, das quais 5% têm defeito.</p>
+<p><strong>a)</strong> (2 valores) Qual a probabilidade de uma peça escolhida ao acaso ser defeituosa?</p>
+<p><strong>b)</strong> (2 valores) Sabendo que uma peça é defeituosa, qual a probabilidade de ter sido produzida pela máquina $M_2$?</p>`,
+    hints:[
+      'a) Lei da probabilidade total.',
+      'b) Teorema de Bayes.'
+    ],
+    sol:`<p><strong>a)</strong> $P(D) = P(D|M_1)P(M_1) + P(D|M_2)P(M_2) = 0,02\\cdot 0,6 + 0,05\\cdot 0,4 = 0,012 + 0,020 = \\mathbf{0,032}$ (3,2%).</p>
+<p><strong>b)</strong> $P(M_2|D) = \\dfrac{P(D|M_2)P(M_2)}{P(D)} = \\dfrac{0,020}{0,032} = \\mathbf{0,625}$ (62,5%).</p>`
+  },
+  {
+    id:'OP25', topic:'Derivadas - Estudo de função', points:4,
+    q:`<p>Considere a função $f(x) = x^2 e^{-x}$.</p>
+<p><strong>a)</strong> (2 valores) Calcule $f\'(x)$ usando a regra do produto.</p>
+<p><strong>b)</strong> (2 valores) Determine os zeros de $f\'$ e identifique os extremos relativos de $f$.</p>`,
+    hints:[
+      '$(uv)\' = u\'v + uv\'$.',
+      'Fatoriza $f\'(x)$ para encontrar os zeros.'
+    ],
+    sol:`<p><strong>a)</strong> $f\'(x) = 2x\\cdot e^{-x} + x^2\\cdot(-e^{-x}) = e^{-x}(2x - x^2) = \\mathbf{xe^{-x}(2-x)}$.</p>
+<p><strong>b)</strong> Como $e^{-x} > 0$ sempre: $f\'(x)=0 \\iff x=0 \\lor x=2$.</p>
+<p>Sinal: $f\'<0$ em $]-\\infty,0[$, $f\'>0$ em $]0,2[$, $f\'<0$ em $]2,+\\infty[$.</p>
+<p>Mínimo relativo em $x=0$: $f(0) = 0$. Máximo relativo em $x=2$: $f(2) = 4e^{-2} = \\frac{4}{e^2}$.</p>`
   }
 ];
 
@@ -624,6 +1236,39 @@ const app = document.getElementById('app');
 let testState = null;
 let timerInterval = null;
 let timerSeconds = 2*3600 + 30*60; // 2h30
+
+/* Configuração dos 3 modos */
+const MODES = {
+  full:  { label:'Teste Completo',  mc:6, op:3, seconds:2*3600+30*60, info:'Simulação de exame oficial' },
+  quick: { label:'Treino Rápido',   mc:3, op:1, seconds:30*60,         info:'Sessão curta de revisão' },
+  topic: { label:'Treino por Tópico', mc:4, op:1, seconds:60*60,        info:'Foco num tema específico' }
+};
+
+/* Mapeamento de cada pergunta para um tópico principal */
+function mainTopic(topicStr){
+  const t = (topicStr||'').toLowerCase();
+  if(t.includes('estatística') || t.includes('estatistica')) return 'Estatística';
+  if(t.includes('combinatória') || t.includes('combinatoria')) return 'Combinatória e Probabilidades';
+  if(t.includes('probabilidade')) return 'Combinatória e Probabilidades';
+  if(t.includes('sucess')) return 'Sucessões';
+  if(t.includes('derivad')) return 'Derivadas';
+  if(t.includes('limite')) return 'Limites';
+  if(t.includes('logaritmo') || t.includes('exponencia')) return 'Exponenciais e Logaritmos';
+  if(t.includes('trigonometr')) return 'Trigonometria';
+  if(t.includes('funç') || t.includes('continuidade')) return 'Funções';
+  return 'Outros';
+}
+
+/* Lista de tópicos principais */
+const MAIN_TOPICS = ['Estatística','Combinatória e Probabilidades','Funções','Sucessões','Limites','Derivadas','Exponenciais e Logaritmos','Trigonometria'];
+
+function countByTopic(){
+  const counts = {};
+  MAIN_TOPICS.forEach(t => counts[t] = {mc:0, op:0});
+  MC_BANK.forEach(q => { const t=mainTopic(q.topic); if(counts[t]) counts[t].mc++; });
+  OPEN_BANK.forEach(q => { const t=mainTopic(q.topic); if(counts[t]) counts[t].op++; });
+  return counts;
+}
 
 function shuffle(arr){
   const a = [...arr];
@@ -682,47 +1327,111 @@ function renderStart(){
   stopTimer();
   document.getElementById('timer').textContent = '02:30:00';
   timerSeconds = 2*3600 + 30*60;
+  const counts = countByTopic();
+  const totalMC = MC_BANK.length, totalOP = OPEN_BANK.length;
   app.innerHTML = `
     <div class="card start-screen">
       <h2>Pronto para treinar?</h2>
-      <p>Esta plataforma gera testes diferentes a cada nova ronda, com base no programa oficial do Exame de Acesso de Matemática da Universidade Aberta.</p>
-      <p><strong>Estrutura do teste:</strong> 6 perguntas de escolha múltipla (Parte A, 1,5 valores cada) + 3 perguntas de desenvolvimento (Parte B). Total: 20 valores.</p>
-      <p><strong>Duração:</strong> 2 horas e 30 minutos. <strong>Sem calculadora.</strong></p>
-      <div class="topics-grid">
-        <div class="topic-chip">Estatística Descritiva</div>
-        <div class="topic-chip">Combinatória e Probabilidades</div>
-        <div class="topic-chip">Funções (linear, módulo, quadrática, polinomiais, trigonométricas)</div>
-        <div class="topic-chip">Sucessões e Progressões</div>
-        <div class="topic-chip">Limites de sucessões e funções</div>
-        <div class="topic-chip">Funções exponencial e logarítmica</div>
-        <div class="topic-chip">Derivadas</div>
+      <p>Escolhe o modo de treino mais adequado ao tempo disponível. O banco atual tem <strong>${totalMC} perguntas de escolha múltipla</strong> e <strong>${totalOP} de desenvolvimento</strong>, sorteadas aleatoriamente a cada ronda.</p>
+
+      <div class="modes-grid">
+        <div class="mode-card" onclick="startTest('full')">
+          <h3>Teste Completo</h3>
+          <div class="mode-meta">2h30 • 6 MC + 3 abertas • 20 valores</div>
+          <div class="mode-desc">Simulação fiel do exame oficial UAb. Todos os tópicos do programa, com cotação total de 20 valores.</div>
+          <div class="mode-btn">Iniciar Simulação</div>
+        </div>
+
+        <div class="mode-card" onclick="startTest('quick')">
+          <h3>Treino Rápido</h3>
+          <div class="mode-meta">30 min • 3 MC + 1 aberta • 7,5 val</div>
+          <div class="mode-desc">Sessão curta para revisão entre tarefas. Ideal para várias rondas seguidas com perguntas diferentes.</div>
+          <div class="mode-btn">Começar Treino</div>
+        </div>
+
+        <div class="mode-card" onclick="renderTopicPicker()">
+          <h3>Treino por Tópico</h3>
+          <div class="mode-meta">1h • 4 MC + 1 aberta • Foco temático</div>
+          <div class="mode-desc">Escolhe um tópico específico para treinar (funções, derivadas, probabilidades...). Útil para reforçar pontos fracos.</div>
+          <div class="mode-btn">Escolher Tópico</div>
+        </div>
       </div>
-      <div class="btns" style="justify-content:center">
-        <button class="btn btn-primary" onclick="startTest()">Iniciar Teste</button>
+
+      <p class="note">Em qualquer dos modos, podes consultar dicas progressivas por pergunta. A correção da Parte A é automática; a Parte B mostra resolução comentada.</p>
+    </div>
+  `;
+}
+
+/* --------- Ecrã de escolha de tópico --------- */
+function renderTopicPicker(){
+  const counts = countByTopic();
+  const items = MAIN_TOPICS.map(t => {
+    const c = counts[t];
+    const available = c.mc >= 2; // mínimo razoável
+    return `<button class="topic-btn" ${available?`onclick="startTest('topic','${t}')"`:'disabled style="opacity:.4;cursor:not-allowed"'}>
+      <span>${t}</span>
+      <span class="topic-count">${c.mc} MC · ${c.op} abertas</span>
+    </button>`;
+  }).join('');
+
+  app.innerHTML = `
+    <div class="card">
+      <h2 style="color:var(--accent);margin-bottom:.5rem">Treino por Tópico</h2>
+      <p style="color:var(--muted);margin-bottom:1rem">Escolhe o tópico em que queres concentrar este treino. O teste sorteia 4 perguntas de escolha múltipla e 1 de desenvolvimento desse tópico (quando disponíveis). Duração: 1 hora.</p>
+      <div class="topic-picker">${items}</div>
+      <div class="btns" style="margin-top:1rem">
+        <button class="btn btn-secondary" onclick="renderStart()">Voltar</button>
       </div>
-      <p class="note">Dica: durante o teste podes consultar dicas progressivas em cada pergunta. A correção é feita no final.</p>
     </div>
   `;
 }
 
 /* --------- Iniciar teste --------- */
-function startTest(){
-  const mc = pickRandom(MC_BANK, 6);
-  const open = pickRandom(OPEN_BANK, 3);
+function startTest(mode='full', topic=null){
+  const cfg = MODES[mode] || MODES.full;
+  let mcPool = MC_BANK, opPool = OPEN_BANK;
+
+  if(mode === 'topic' && topic){
+    mcPool = MC_BANK.filter(q => mainTopic(q.topic) === topic);
+    opPool = OPEN_BANK.filter(q => mainTopic(q.topic) === topic);
+  }
+
+  // Ajusta quantidades se o pool for menor do que o pedido
+  const nMC = Math.min(cfg.mc, mcPool.length);
+  const nOP = Math.min(cfg.op, opPool.length);
+
+  if(nMC === 0){
+    alert('Sem perguntas suficientes para este tópico.');
+    renderStart();
+    return;
+  }
+
+  const mc = pickRandom(mcPool, nMC);
+  const open = pickRandom(opPool, nOP);
+
   testState = {
+    mode, topic,
     mc, open,
-    answersMC: new Array(6).fill(null),
-    answersOpen: new Array(3).fill(''),
+    answersMC: new Array(nMC).fill(null),
+    answersOpen: new Array(nOP).fill(''),
     submitted: false
   };
-  timerSeconds = 2*3600 + 30*60;
+
+  timerSeconds = cfg.seconds;
   startTimer();
   renderTest();
 }
 
 /* --------- Renderizar teste --------- */
 function renderTest(){
-  let html = `<div class="part-header">Parte A — Escolha Múltipla (6 questões × 1,5 valores = 9 valores)</div>`;
+  const cfg = MODES[testState.mode];
+  const nMC = testState.mc.length;
+  const totalMCval = (nMC * 1.5).toString().replace('.',',');
+  const modeBadge = testState.mode === 'topic'
+    ? `<div class="mode-badge">${cfg.label} — ${testState.topic}</div>`
+    : `<div class="mode-badge">${cfg.label}</div>`;
+  let html = modeBadge;
+  html += `<div class="part-header">Parte A — Escolha Múltipla (${nMC} ${nMC===1?'questão':'questões'} × 1,5 valores = ${totalMCval} valores)</div>`;
   html += `<p class="note" style="margin-bottom:1rem">Em cada questão são apresentadas cinco opções, das quais apenas uma é correta. Indica a opção que consideras verdadeira. Não é necessário apresentar cálculos.</p>`;
 
   testState.mc.forEach((q,i)=>{
@@ -752,8 +1461,11 @@ function renderTest(){
     </div>`;
   });
 
-  html += `<div class="part-header">Parte B — Desenvolvimento (11 valores)</div>`;
-  html += `<p class="note" style="margin-bottom:1rem">Justifica todas as afirmações e apresenta os cálculos realizados. Após a submissão, é apresentada a resolução comentada para auto-correção.</p>`;
+  const totalOPval = testState.open.reduce((s,q)=>s+q.points,0).toString().replace('.',',');
+  if(testState.open.length > 0){
+    html += `<div class="part-header">Parte B — Desenvolvimento (${totalOPval} valores)</div>`;
+    html += `<p class="note" style="margin-bottom:1rem">Justifica todas as afirmações e apresenta os cálculos realizados. Após a submissão, é apresentada a resolução comentada para auto-correção.</p>`;
+  }
 
   testState.open.forEach((q,i)=>{
     html += `<div class="card" id="open-card-${i}">
@@ -854,21 +1566,29 @@ function submitTest(){
   });
 
   // resumo no topo
+  const nMC = testState.mc.length;
+  const maxMCscore = nMC * 1.5;
   const totalOpen = testState.open.reduce((acc,q)=>acc+q.points,0);
   const summary = document.createElement('div');
   summary.className = 'card results-summary';
   summary.id = 'results-card';
-  const pct = (mcScore / 9 * 100).toFixed(0);
+  const pct = maxMCscore > 0 ? (mcScore / maxMCscore * 100).toFixed(0) : 0;
+  const mode = testState.mode;
+  const topic = testState.topic;
+  const newTestBtn = mode === 'topic'
+    ? `<button class="btn btn-primary" onclick="startTest('topic','${topic}')">Novo Teste — ${topic}</button>`
+    : `<button class="btn btn-primary" onclick="startTest('${mode}')">Fazer Novo Teste (Diferente)</button>`;
+
   summary.innerHTML = `
     <h2 style="color:var(--accent)">Resultado da Parte A</h2>
-    <div class="score-big">${mcScore.toString().replace('.',',')} / 9 val</div>
-    <div class="score-detail">Acertaste ${mcResults.filter(r=>r.correct).length} de 6 questões (${pct}%)</div>
+    <div class="score-big">${mcScore.toString().replace('.',',')} / ${maxMCscore.toString().replace('.',',')} val</div>
+    <div class="score-detail">Acertaste ${mcResults.filter(r=>r.correct).length} de ${nMC} ${nMC===1?'questão':'questões'} (${pct}%)</div>
     <div class="progress" style="max-width:300px;margin:1rem auto"><div class="progress-bar" style="width:${pct}%"></div></div>
-    <p style="margin-top:1rem;color:var(--muted)">A Parte B tem ${totalOpen.toString().replace('.',',')} valores. Compara a tua resolução com a apresentada em cada questão para te auto-avaliares.</p>
+    ${totalOpen>0?`<p style="margin-top:1rem;color:var(--muted)">A Parte B tem ${totalOpen.toString().replace('.',',')} valores. Compara a tua resolução com a apresentada em cada questão para te auto-avaliares.</p>`:''}
     <div class="btns" style="justify-content:center;margin-top:1.5rem">
-      <button class="btn btn-primary" onclick="startTest()">Fazer Novo Teste (Diferente)</button>
+      ${newTestBtn}
       <button class="btn btn-secondary" onclick="window.scrollTo({top:0,behavior:'smooth'})">Voltar ao Topo</button>
-      <button class="btn btn-secondary" onclick="renderStart()">Ecrã Inicial</button>
+      <button class="btn btn-secondary" onclick="renderStart()">Mudar Modo</button>
     </div>
   `;
   app.insertBefore(summary, app.firstChild);
